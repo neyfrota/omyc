@@ -1,0 +1,36 @@
+
+
+<h1>List </h1>
+
+
+<table class="table table-hover table-condensed">
+	<thead>
+		<tr>
+			<th width=10>#</th>
+			<th>Id</th>
+			<th>Title <small class=pull-right><a ng-click="clickReload()" >(reload)</a></small></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-hide="!api.busy">
+			<td colspan=3><center>loading....</center></td>
+		</tr>
+		<tr ng-hide="(api.busy || api.response.list.length)">
+			<td colspan=3><center>...empty...</center></td>
+		</tr>
+		<tr ng-repeat="item in api.response.list" ng-click="clickItem(item.id)">
+			<td>{{$index+1}}</td>
+			<td>{{item.id}}</td>
+			<td>{{item.title}}</td>
+		</tr>
+	</tbody>
+</table>
+
+	<div class="alert alert-danger" ng-hide="!api.response.error">
+		<b>Fail!</b> {{api.response.error.message}}
+		(try <a ng-click="clickReload()" >reload</a>)
+	</div>
+
+
+
+<a class="btn btn-primary" href="#/add" >Create</a><br>

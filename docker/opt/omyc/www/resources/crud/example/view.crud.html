@@ -1,0 +1,43 @@
+
+
+
+<h1 ng-hide="form.id">Create</h1>
+<h1 ng-hide="!form.id">Edit</h1>
+
+<form >
+	<div class="form-group">
+		<label >Id</label>
+		<input type="text" class="form-control" ng-model="form.id" readonly disabled>
+	</div>
+	<div class="form-group">
+		<label >Title</label>
+		<input type="text" class="form-control" ng-model="form.title" ng-disabled="api.busy" placeholder="(title can not be empty)">
+	</div>
+	<div class="btn-group" ng-hide="!api.busy">
+		<a class="btn btn-default" >Please wait...</a>
+	</div>
+	
+	<div class="alert alert-danger" ng-hide="!api.response.error">
+		<b>I can not do :(</b><br>{{api.response.error.message}}
+	</div>
+
+	<div ng-hide="api.busy">
+		<div class="btn-group" ng-hide="form.id">
+			<a class="btn btn-default" href="#/">Cancel</a>
+			<a class="btn btn-primary" ng-click="api.create()" >Create</a>
+		</div>
+		<div class="btn-group" ng-hide="!form.id">
+			<a class="btn btn-default" href="#/">Cancel</a>
+			<div class="btn-group">
+				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Delete</button>
+				<ul class="dropdown-menu">
+					<li><a >No</a></li>
+					<li><a ng-click="api.delete()" >Yes</a></li>
+				</ul>
+			</div>
+			<a class="btn btn-primary" ng-click="api.update()" >Save</a>
+		</div>
+	</div>
+
+</form>
+

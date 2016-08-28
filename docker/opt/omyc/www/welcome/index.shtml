@@ -1,0 +1,35 @@
+
+<!--#include virtual="../resources/includes/page.top.html" -->
+
+<script>activateMenu("welcome")</script>
+
+<div class="container" style="padding-top: 70px">
+
+    <div class="jumbotron">
+        <h1><b>Welcome</b></h1>
+        <p>
+            Use top menu to navigate.
+        </p>
+    </div>
+
+
+    <div class="jumbotron" style="margin: 0px;padding: 0px;background-color: #fff">
+        <div class="row" style="margin: 25px 0px;">
+            <div class="col-md-4" style="text-align: center; padding: 25px 50px;">
+                <h1><span class="glyphicon glyphicon-folder-open" aria-hidden="true" ></span></h1>
+                <h3>Access your files over web at any time.</h3>
+            </div>
+            <div class="col-md-4"  style="text-align: center; padding: 25px 50px;">
+                <h1><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></h1>
+                <h3>Sync folders across multiple devices</h3>
+            </div>
+            <div class="col-md-4"  style="text-align: center; padding: 25px 50px;">
+                <h1><span class="glyphicon glyphicon-hdd" aria-hidden="true" ></h1>
+                <h3>Mount your files local in your computer</h3>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!--#include virtual="../resources/includes/page.bot.html" -->

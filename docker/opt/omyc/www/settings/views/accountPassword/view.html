@@ -1,0 +1,50 @@
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3">
+            <h3 style="margin-top:0px;">Password</h3>
+            <p>
+                After change your password, we need re-authenticate.
+            </p>
+            <p>
+                If you loose your password, ask a super power user to reset.
+            </p>
+        </div>
+        <div class="col-sm-9">
+            <div class=well>
+                <form >
+                    <div class="form-group">
+                        <label >Actual password</label>
+                        <input type="password" class="form-control" ng-readonly="api.busy" ng-model="form.passwordNow"  id="exampleInputPassword1" placeholder="(actual password)">
+                    </div>
+                    <div class="form-group">
+                        <label >New password</label>
+                        <input type="password" class="form-control" ng-readonly="api.busy" ng-model="form.passwordNew"  		id="exampleInputPassword2" placeholder="(new password)" style="margin-bottom: 10px;">
+                        <input type="password" class="form-control" ng-readonly="api.busy" ng-model="form.passwordNewRetype"	id="exampleInputPassword3" placeholder="(confirm new password)">
+                    </div>
+                    <div class="alert alert-danger" ng-hide="!api.response.error">
+                        <b>I can not do :(</b><br>{{api.response.error.message}}
+                    </div>
+                    <div class="alert alert-success" ng-hide="!api.response.ok">
+                        <b>Password changed :)</b><br><a href="/">Click here</a> to start again and check.
+                    </div>
+                    <div class="btn-group" ng-hide="!api.busy">
+                        <a class="btn btn-default" >Please wait...</a>
+                    </div>
+                    <div class="btn-group" ng-hide="api.busy">
+                        <a class="btn btn-default" href="#/account">Cancel</a>
+                        <a class="btn btn-primary" ng-click="api.changePassword()" >Change password</a>
+                    </div>
+                </form>
+            </div>            
+        </div>
+    </div>
+</div>
+
+
+
+
+
+

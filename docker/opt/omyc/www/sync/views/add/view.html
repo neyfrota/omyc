@@ -1,0 +1,74 @@
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3">
+            <h3 style="margin-top:0px;">New sync</h3>
+            <p>
+                Decide sync mode and select folder you want sync.
+            </p>
+            <p>
+                After enable sync, you get secret keys to sync this folder with other devices
+            </p>
+        </div>
+        <div class="col-sm-9">
+            <div class=well style="padding-top: 10px;">
+
+                <div class="form-group">
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="optionsRadios" value="1" ng-model="isNew" checked>
+                            This is a new sync folder and i need a new secret key to invite devices
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="optionsRadios" value="" ng-model="isNew" >
+                            I have a secret key to join a folder already in sync with other devices
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-hide="isNew">
+                    <input type="text" class="form-control" ng-model="item.secret_ext" ng-disabled="api.busy" placeholder="Enter secret key to sync" >
+                </div>
+
+
+                <div class="form-group">
+                    <div class="well well-sm" style="margin-bottom: 20px; padding:0px; background-color: #ffffff; border-color: #cccccc; padding-bottom: 15px;">
+                        <input type="text" disabled readonly class="form-control" ng-model="item.folder"  placeholder="Please select folder bellow" style="background-color: #ffffff;border: 0px;padding: 10px;margin: 0px;height: inherit;border-bottom: 1px solid #D2D2D2; margin-bottom: 10px; border-radius: 0px;">
+                        <treecontrol
+                        class="tree-classic"
+                        tree-model="tree.data"
+                        options="tree.opts"
+                        expanded-nodes="tree.expandedNodes" 
+                        on-selection="tree.showSelected(node, selected, $parentNode, $index, $first, $middle, $last, $odd, $even)"
+                        on-node-toggle="tree.showToggle(node, expanded, $parentNode, $index, $first, $middle, $last, $odd, $even)"
+                        >
+                        {{node.localLabel}}
+                        </treecontrol>
+                    </div>
+                </div>
+
+
+
+                <div class="alert alert-danger" ng-hide="!api.response.error"><b>Fail!</b> {{api.response.error.message}}</div>
+
+                <div class="btn-group" ng-hide="!api.busy">
+                    <a class="btn btn-default" >Please wait...</a>
+                </div>
+                <div class="btn-group" ng-hide="api.busy">
+                    <button type="button" class="btn btn-default" ng-click="clickCancel()">Back</button>
+                    <!-- <button ng-hide="item.folder" type="button" class="btn btn-default" >Please select a folder</button> -->
+                    <button xng-hide="!item.folder" type="button" class="btn btn-primary" ng-click="clickAddConfirm()">Sync this folder</button>
+                </div>
+
+
+            </div>            
+        </div>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,35 @@
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3">
+            <h3 style="margin-top:0px;">Folders list</h3>
+            <p>
+                Install <a target=_blank href="https://www.getsync.com/features">BitTorrent sync</a> in your devices to sync with this folders.
+            </p>
+            <p>
+                View folder detail to get secret keys.
+            </p>
+        </div>
+        <div class="col-sm-9">
+            <div class=well>
+
+                <div ng-class="{ 'transparent':api.busy }">
+                    <ul class="list-group" >
+                        <li ng-hide="list.length" class="list-group-item"><center>...empty list...</center></li>
+                        <li
+                            ng-repeat="item in list" ng-click="clickItem(item)"
+                            class="list-group-item"
+                        ><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>&nbsp;&nbsp;{{item.folder}}</li>
+                    </ul>
+                </div>
+                <a class="btn btn-primary" ng-click="clickAdd()"  >Sync new folder</a><br>
+
+            </div>            
+        </div>
+    </div>
+</div>
+
+
+

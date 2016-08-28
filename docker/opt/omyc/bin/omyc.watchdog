@@ -1,0 +1,89 @@
+#!/usr/bin/perl
+# ===============================================
+#
+# ourt webapp has no permission to kill/hup root based process
+#
+# Our workaround consist in:
+# - allow webapp modify config files
+# - cron run this script each minute as root (with permission we need)
+# - restart services if detect changes at config files
+#
+# ===============================================
+
+&watch_file_and_restart_if_need(
+    "btsync",
+    "/etc/btsync/omyc.conf",
+    "/tmp/restart-if-need.btsync",
+    "/opt/omyc/bin/services/btsync.restart "
+);
+&watch_file_and_restart_if_need(
+    "sftp",
+    "/data/settings/users.sftp",
+    "/tmp/restart-if-need.proftpd",
+    "/opt/omyc/bin/services/sftp.restart "
+);
+
+
+
+sub watch_file_and_restart_if_need{
+    my($service_name,$file_to_watch,$data_storage,$restart_command) = @_;        
+    #
+    print "\n===[ watch_file_and_restart_if_need ]===\n";
+    print "watch=$file_to_watch\n";
+    print "storage=$data_storage\n";
+    print "restart=$restart_command\n";
+    #
+    my $last_date   = &data_read($data_storage);
+    my $now_date    = &get_file_date($file_to_watch);
+    #
+    print "last_date=$last_date\n";
+    print "now_date=$now_date\n";
+    #
+    if (!$now_date) {
+        print "we cannot check watched file, no action at all\n";
+        return;
+    }
+    #
+    if (!$last_date) {
+        print "If we do not remember last data, this is first time we run. Cannot check now\n";
+        &data_save($data_storage,$now_date);
+        return;
+    }
+    #
+    if ($last_date ne $now_date) {
+        print time."|We detect changes at service '$service_name' and trigger restart\n";
+        print "run $restart_command\n";
+        my $ans = `$restart_command 2>\&1 `;
+        print "$ans\n";
+        #
+        &data_save($data_storage,$now_date);
+        return;
+    } else {
+        print "No changes. Nothing to do\n";
+        return;
+    }
+}
+
+
+sub data_read{
+    my($file) = @_;        
+	open (IN,$file);
+	my $value = <IN>;
+	close(IN);
+    chomp($value);
+	return $value
+}
+sub data_save{
+    my($file,$value) = @_;        
+    chomp($value);
+	open (OUT,">$file");
+	print OUT $value;
+	close(OUT);
+}
+sub get_file_date{
+    my($file) = @_;        
+    my $value = (stat($file))[9];
+    chomp($value);
+	return $value
+}
+

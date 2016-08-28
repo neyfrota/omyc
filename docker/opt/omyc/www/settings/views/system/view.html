@@ -1,0 +1,100 @@
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3">
+            <h3 style="margin-top:10px;">Dynamic dns</h3>
+            <p>
+                We support no-ip for dynamic DNS.
+                <a target=_blank href="http://www.noip.com/support/knowledgebase/getting-started-with-no-ip-com/">Create your account</a> then set here.
+            </p>
+        </div>
+        <div class="col-sm-9">
+            <div class=well>
+                <div ng-hide="noip.config.data" >
+                    <h3 ng-hide="!noip.status.now.ok" style="margin-top: 0px;"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> No-ip is ok</i></h3>
+                    <h3 ng-hide="noip.status.now.ok" style="margin-top: 0px;"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> No-ip fail</i></h3>
+                    <p ng-hide="!noip.status.now.message">{{noip.status.now.message}}</p>
+                    <p>Last update
+                        <span ng-hide="!noip.status.now.time">was {{noip.status.now.time}} ago.</span> 
+                        <span ng-hide="noip.status.now.time">was right now.</span> 
+                        <small ng-hide="!(noip.status.busy || noip.config.busy)" >(Loading...)</small>
+                        <small ng-hide="(noip.status.busy || noip.config.busy)" ng-click="noip.status.update()">(reload)</small>
+                    </p>
+                    <p><button ng-click="noip.config.load()" class="btn btn-primary">Edit config</button></p>
+                </div>
+                <form ng-hide="!noip.config.data">
+                    <div class="form-group">
+                        <label >No-ip hostname</label>
+                        <input ng-readonly="noip.config.busy" ng-model="noip.config.data.hostname" class="form-control" placeholder="you.noip.com">
+                    </div>
+                    <div class="form-group">
+                        <label >Username</label>
+                        <input ng-readonly="noip.config.busy" ng-model="noip.config.data.username" class="form-control" placeholder="username">
+                    </div>
+                    <div class="form-group">
+                        <label >Password</label>
+                        <input ng-readonly="noip.config.busy" type="password"  ng-model="noip.config.data.password" class="form-control" placeholder="Password">
+                    </div>
+
+					<div class="alert alert-danger" ng-hide="!noip.config.error">
+						<b>Fail!</b> {{noip.config.error.message}}
+					</div>
+					<button ng-hide="!noip.config.busy" class="btn btn-default" >Please wait...</button>
+                    <div class="btn-group" ng-hide="noip.config.busy">
+                        <a class="btn btn-default" ng-click="noip.config.cancel()" >Cancel</a>
+                        <a class="btn btn-primary" ng-click="noip.config.save()" >Save changes and update</a>
+                    </div>
+                </form>
+            </div>            
+        </div>
+    </div>
+</div>
+
+
+<!--
+<hr style="margin: 10px 0px 30px 0px;">
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3">
+            <h3 style="margin-top:0px;">Certificate</h3>
+            <p>
+                We support <a target=_blank href="https://letsencrypt.org/getinvolved/">lets encrypt</a> for free https certificate.
+            </p>
+        </div>
+        <div class="col-sm-9">
+            <div class=well>
+                <div ng-hide="letsEncrypt.config.data" >
+                    <h3 ng-hide="!letsEncrypt.status.now.ok" style="margin-top: 0px;"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Lets encrypt is ok</i></h3>
+                    <h3 ng-hide="letsEncrypt.status.now.ok" style="margin-top: 0px;"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Lets encrypt fail</i></h3>
+                    <p ng-hide="!letsEncrypt.status.now.message">{{letsEncrypt.status.now.message}}</p>
+                    <p>Last update
+                        <span ng-hide="!letsEncrypt.status.now.time">was {{letsEncrypt.status.now.time}} ago.</span> 
+                        <span ng-hide="letsEncrypt.status.now.time">was right now.</span> 
+                        <small ng-hide="!(letsEncrypt.status.busy || letsEncrypt.config.busy)" >(loading...)</small>
+                        <small ng-hide="(letsEncrypt.status.busy || letsEncrypt.config.busy)" ng-click="letsEncrypt.status.update()">(reload)</small>
+                    </p>
+                    <p><button ng-click="letsEncrypt.config.load()" class="btn btn-primary">Edit config</button></p>
+                </div>
+                <form ng-hide="!letsEncrypt.config.data">
+                    <div class="form-group">
+                        <label >Lets encrypt hostname</label>
+                        <input ng-readonly="letsEncrypt.config.busy" ng-model="letsEncrypt.config.data.hostname" class="form-control" placeholder="you.domain.com">
+                    </div>
+					<div class="alert alert-danger" ng-hide="!letsEncrypt.config.error">
+						<b>Fail!</b> {{letsEncrypt.config.error.message}}
+					</div>
+					<button ng-hide="!letsEncrypt.config.busy" class="btn btn-default" >Please wait...</button>
+                    <div class="btn-group" ng-hide="letsEncrypt.config.busy">
+                        <a class="btn btn-default" ng-click="letsEncrypt.config.cancel()" >Cancel</a>
+                        <a class="btn btn-primary" ng-click="letsEncrypt.config.save()" >Save changes and update</a>
+                    </div>
+                </form>
+            </div>            
+        </div>
+    </div>
+</div>
+
+-->

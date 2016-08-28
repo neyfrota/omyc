@@ -1,0 +1,71 @@
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3">
+            <h3 style="margin-top:0px;">User</h3>
+            <p>
+                If a user is deleted, no files are deleted.
+                Create a new user with same username and files will be restored.
+            </p>
+            <p>
+                Super powers allow manage users and system settings
+            </p>
+        </div>
+        <div class="col-sm-9">
+            <div class=well>
+
+<form>
+	<div class="form-group">
+		<label for="exampleInputEmail1">Username</label>
+		<input ng-readonly="(api.busy || isEdit)" ng-disable="(api.busy || isEdit)" ng-model="user.username"   class="form-control" placeholder="username" >
+	</div>
+
+	<div class="form-group">
+		<label for="exampleInputPassword1">Password</label>
+		<input ng-readonly="api.busy" ng-model="user.password"    type="password" class="form-control" placeholder="(leave empty to no change)">
+	</div>
+
+	<div class="checkbox">
+		<label>
+		<input ng-model="user.isAdmin" ng-true-value="1" ng-false-value="0" type="checkbox"> apply super powers
+		</label>
+	</div>
+
+	<div class="btn-group" ng-hide="!api.busy">
+		<a class="btn btn-default" >Please wait...</a>
+	</div>
+		
+	<div class="alert alert-danger" ng-hide="!api.error">
+		<b>Fail!</b> {{api.error.message}}
+	</div>
+	
+	<div ng-hide="api.busy">
+		<div class="btn-group" ng-hide="!isAdd">
+			<a class="btn btn-default" href="#/users/">Cancel</a>
+			<a class="btn btn-primary" ng-click="api.create()" >Create</a>
+		</div>
+		<div class="btn-group" ng-hide="!isEdit">
+			<a class="btn btn-default" href="#/users/">Cancel</a>
+			<div class="btn-group">
+				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Delete</button>
+				<ul class="dropdown-menu">
+					<li><a >No</a></li>
+					<li><a ng-click="api.delete()" >Yes</a></li>
+				</ul>
+			</div>
+			<a class="btn btn-primary" ng-click="api.update()" >Save</a>
+		</div>
+	</div>
+
+</form>
+
+            </div>            
+        </div>
+    </div>
+</div>
+
+
+
+
+
+ 

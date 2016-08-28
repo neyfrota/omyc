@@ -1,0 +1,86 @@
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3">
+            <h3 style="margin-top:0px;">Folder detail</h3>
+            <p>
+                Install <a target=_blank href="https://www.getsync.com/features">BitTorrent sync</a> and use secret keys to sync this folder with other devices
+            </p>
+        </div>
+        <div class="col-sm-9">
+            <div class=well>
+
+
+				<ul class="list-group" >
+					<li class="list-group-item">
+						<span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>&nbsp;&nbsp;{{item.folder}}
+					</li>
+				</ul>
+
+
+
+                <div class="form-group" ng-hide="!item.secret_rw" style="margin-bottom:0px;">
+                    <div class="form-group">
+                        <div class="radio" ng-hide="!item.secret_rw" style="margin-top:0px; margin-bottom:5px;">
+                            <label>
+                                <input type="radio" name="optionsRadios" value="rw" ng-model="secretToShow" checked>
+                                Show full access secret key 
+                            </label>
+                        </div>
+                        <div class="radio" ng-hide="!item.secret_ro" style="margin-top:0px; margin-bottom:5px;">
+                            <label>
+                                <input type="radio" name="optionsRadios" value="ro" ng-model="secretToShow" >
+                                Show read only secret key 
+                            </label>
+                        </div>
+                        <div class="radio" ng-hide="!item.secret_ext" style="margin-top:0px; margin-bottom:5px;">
+                            <label>
+                                <input type="radio" name="optionsRadios" value="ext" ng-model="secretToShow" >
+                                Show external folder secret key 
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group" ng-hide="(secretToShow!='rw')">
+                    <div class="well well-sm" style="margin-bottom: 10px; background-color: #ffffff; border-color: #cccccc; padding:0px;">
+                        <input type="text" class="form-control" readonly ng-model="item.secret_rw" style="background-color: #ffffff;border: 0px;padding: 10px;margin: 0px;height: inherit;border-bottom: 1px solid #D2D2D2; margin-bottom: 10px; border-radius: 0px;">
+                        <div style="margin:10px;" id="qrcode_rw"></div>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-hide="(secretToShow!='ro')">
+                    <div class="well well-sm" style="margin-bottom: 20px; background-color: #ffffff; border-color: #cccccc; padding:0px;">
+                        <input type="text" class="form-control" readonly ng-model="item.secret_ro" style="background-color: #ffffff;border: 0px;padding: 10px;margin: 0px;height: inherit;border-bottom: 1px solid #D2D2D2; margin-bottom: 10px; border-radius: 0px;">
+                        <div style="margin:10px;" id="qrcode_ro"></div>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-hide="(secretToShow!='ext')">
+                    <div class="well well-sm" style="margin-bottom: 20px; background-color: #ffffff; border-color: #cccccc; padding:0px;">
+                        <input type="text" class="form-control" readonly ng-model="item.secret_ext" style="background-color: #ffffff;border: 0px;padding: 10px;margin: 0px;height: inherit;border-bottom: 1px solid #D2D2D2; margin-bottom: 10px; border-radius: 0px;">
+                        <div style="margin:10px;" id="qrcode_ext"></div>
+                    </div>
+                </div>
+
+
+                <div class="alert alert-danger" ng-hide="!api.response.error"><b>Fail!</b> {{api.response.error.message}}</div>
+    
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default" ng-click="clickCancel()">Back</button>
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Stop sync this folder</button>
+                    <ul class="dropdown-menu">
+                        <li><a >No</a></li>
+                        <li><a ng-click="api.delete()" >Yes, stop sync</a></li>
+                    </ul>
+                </div>
+
+
+            </div>            
+        </div>
+    </div>
+</div>
+

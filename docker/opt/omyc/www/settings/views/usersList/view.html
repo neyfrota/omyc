@@ -1,0 +1,31 @@
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3">
+            <h3 style="margin-top:0px;">Users list</h3>
+            <p>
+                Users with permission to access the system. 
+            </p>
+        </div>
+        <div class="col-sm-9">
+            <div class=well>
+
+                <div ng-class="{ 'transparent':api.busy }">
+                    <ul class="list-group" >
+                        <li
+                            ng-repeat="item in list" ng-click="clickItem(item)"
+                            class="list-group-item"
+                        ><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;{{item}}</li>
+                    </ul>
+                </div>
+                <a class="btn btn-primary" ng-click="clickAdd()"  >Create new user</a><br>
+
+            </div>            
+        </div>
+    </div>
+</div>
+
+
+

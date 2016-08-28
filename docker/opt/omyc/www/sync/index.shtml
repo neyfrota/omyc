@@ -1,0 +1,17 @@
+
+<!--#include virtual="../resources/includes/page.top.html" -->
+
+        <script>activateMenu("sync")</script>
+    	<script src="../resources/qrcode/jquery.qrcode.min.js" ></script>
+       	<script src="index.js"			            ></script>
+		<script src="views/list/view.js"            ></script>
+		<script src="views/view/view.js"	        ></script>
+		<script src="views/add/view.js"             ></script>
+		<div class="container" style="padding-top: 70px">
+			<div ng-app="app">
+                <h1><span class="glyphicon glyphicon-refresh"      aria-hidden="true" style="margin-bottom: 30px;"></span> Sync folders</h1>
+                <div ng-view></div>
+			</div>
+		</div>
+
+<!--#include virtual="../resources/includes/page.bot.html" -->

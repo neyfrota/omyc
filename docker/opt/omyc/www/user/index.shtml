@@ -1,0 +1,14 @@
+
+<!--#include virtual="../resources/includes/page.top.html" -->
+
+        <script>activateMenu("user")</script>
+    	<script src="index.js"			        ></script>
+		<script src="views/home/view.js"		></script>
+		<script src="views/password/view.js"	></script>
+		<div class="container" style="padding-top: 70px">
+			<div ng-app="app">
+			<div ng-view></div>
+			</div>
+		</div>
+
+<!--#include virtual="../resources/includes/page.bot.html" -->
