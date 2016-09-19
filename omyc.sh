@@ -37,7 +37,8 @@ print_usage() {
 	echo "  start   -> start development instance"
 	echo "  stop    -> stop development instance"
 	echo "  log     -> tail instance log"
-	echo "  rebuild -> rebuild development instance"
+	echo "  rebuild -> destroy and build development instance"
+	echo "  destroy -> destroy development instance and remove /tmp/omyc data folder"
 	echo "  shell   -> access shell at development instance"
 }
 set_active_instance_id() {
@@ -98,8 +99,18 @@ fi
 #
 if [ $1 == "rebuild" ]; then
 	docker ps -a | tail -n +2 | awk '{print $1,$2}' | grep omyc-dev | awk '{print $1}' | xargs --no-run-if-empty docker kill 
-	docker ps -a | tail -n +2 | awk '{print $1,$2}' | grep omyc-dev | awk '{print $1}' | xargs --no-run-if-empty docker rm 
+	docker ps -a | tail -n +2 | awk '{print $1,$2}' | grep omyc-dev | awk '{print $1}' | xargs --no-run-if-empty docker rm
+	docker images | tail -n +2 | grep omyc-dev | awk '{print $3}' | xargs docker rmi -f
 	docker build -t omyc-dev .
+	exit;
+fi
+#
+if [ $1 == "destroy" ]; then
+	echo "We need SU permission to remove /tmp/omyc"
+	sudo rm -Rf /tmp/omyc
+	docker ps -a | tail -n +2 | awk '{print $1,$2}' | grep omyc-dev | awk '{print $1}' | xargs --no-run-if-empty docker kill 
+	docker ps -a | tail -n +2 | awk '{print $1,$2}' | grep omyc-dev | awk '{print $1}' | xargs --no-run-if-empty docker rm 
+	docker images | tail -n +2 | grep omyc-dev | awk '{print $3}' | xargs docker rmi -f
 	exit;
 fi
 #
