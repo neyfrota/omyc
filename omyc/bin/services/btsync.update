@@ -1,0 +1,5 @@
+#!/usr/bin/perl
+use lib '/omyc/lib';# ask perl to look modules in this folder 
+use omyc::sync;
+&omyc::sync::updateSystem();
+
