@@ -105,6 +105,14 @@ if [ $1 == "rebuild" ]; then
 	exit;
 fi
 #
+if [ $1 == "build" ]; then
+	docker ps -a | tail -n +2 | awk '{print $1,$2}' | grep omyc-dev | awk '{print $1}' | xargs --no-run-if-empty docker kill 
+	docker ps -a | tail -n +2 | awk '{print $1,$2}' | grep omyc-dev | awk '{print $1}' | xargs --no-run-if-empty docker rm
+	docker images | tail -n +2 | grep omyc-dev | awk '{print $3}' | xargs docker rmi -f
+	docker build -t omyc-dev .
+	exit;
+fi
+#
 if [ $1 == "destroy" ]; then
 	echo "We need SU permission to remove /tmp/omyc"
 	sudo rm -Rf /tmp/omyc

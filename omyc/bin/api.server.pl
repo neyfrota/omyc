@@ -263,6 +263,9 @@ post '/noip/config' => sub {
         #if (!$tmp)			                { return $self->render(json => {error => { code=>"hostname_empty", 	    message => "empty hostname" 	} });}
         if ($tmp ne $json_data->{hostname}) { return $self->render(json => {error => { code=>"hostname_invalid", 	message => "invalid hostname" 	} });}
         $config{hostname} = $tmp;
+        $config{lastUpdateMessage}		= "Update in queue. Please wait.";
+        $config{lastUpdateNoipResponse}	= "";
+        $config{lastUpdateOk}			= 1;
         $need_save = 1;
     }
     #
@@ -272,6 +275,9 @@ post '/noip/config' => sub {
         #if (!$tmp)			                { return $self->render(json => {error => { code=>"username_empty", 	    message => "empty username" 	} });}
         if ($tmp ne $json_data->{username}) { return $self->render(json => {error => { code=>"username_invalid", 	message => "invalid username" 	} });}
         $config{username} = $tmp;
+        $config{lastUpdateMessage}		= "Update in queue. Please wait.";
+        $config{lastUpdateNoipResponse}	= "";
+        $config{lastUpdateOk}			= 1;
         $need_save = 1;
     }
     #
@@ -281,6 +287,9 @@ post '/noip/config' => sub {
         #if (!$tmp)			                { return $self->render(json => {error => { code=>"password_empty", 	    message => "empty password" 	} });}
         if ($tmp ne $json_data->{password}) { return $self->render(json => {error => { code=>"password_invalid", 	message => "invalid password" 	} });}
         $config{password} = $tmp;
+        $config{lastUpdateMessage}		= "Update in queue. Please wait.";
+        $config{lastUpdateNoipResponse}	= "";
+        $config{lastUpdateOk}			= 1;
         $need_save = 1;
     }
     #

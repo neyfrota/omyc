@@ -117,7 +117,7 @@ chmod -Rf a-rwx,a+rX,u+w /var/log/proftpd/ >/dev/null 2>/dev/null
 # setup cron 
 # ================================
 echo "* * * * * /omyc/bin/services/restart.if.need >/dev/null 2>/dev/null " > /tmp/mycron 2>/dev/null
-echo "12 * * * * /omyc/bin/services/noip.update >/dev/null 2>/dev/null " >> /tmp/mycron 2>/dev/null
+echo "12 * * * * /omyc/bin/services/noip.update force >/dev/null 2>/dev/null " >> /tmp/mycron 2>/dev/null
 crontab /tmp/mycron >/dev/null 2>/dev/null
 rm /tmp/mycron >/dev/null 2>/dev/null
 killall cron  >/dev/null 2>/dev/null
