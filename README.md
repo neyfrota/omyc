@@ -15,8 +15,8 @@ To hack/edit/modify:
 * run `./omyc.sh log` to see log in real time
 * access web frontend at https://127.0.0.1 (admin/admin) 
 * access sftp at 127.0.0.1 (admin/admin) 
-* run `./omyc.sh shell ` to enter shel at devlab image
-* omyc folders (at host) is exported (at instance) to easy development/edit at host
-* omyc is started (if possible) in development mode (restart if source files change, use less resources)
+* run `./omyc.sh shell ` to enter shell at devlab image
+* ./omyc folder (at host) is exported (at instance) to easy hack/edit/modify at host
+* omyc is started (maybe) in development mode (restart if source files change, use less resources)
 * have fun hacking
 
