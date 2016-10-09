@@ -1,10 +1,9 @@
-# "Old Man Yells at Cloud" development area
+# "Old Man Yells at Cloud" development lab
 
-This repository is developer side for omyc. If your plan its just use/launch your own omyc instance, visit https://omyc.github.io/  
+Devlab are resources to run omyc in development mode, to hack/edit/modify.
+If your plan its just use/launch/run your own omyc instance, visit https://omyc.github.io/  
 
-# Development lab
-
-Devlab are resources to run omyc in development mode, to hack/edit/develop
+To hack/edit/modify:
 
 * make sure you have docker
 * make sure all exported ports are free 
@@ -21,6 +20,3 @@ Devlab are resources to run omyc in development mode, to hack/edit/develop
 * omyc is started (if possible) in development mode (restart if source files change, use less resources)
 * have fun hacking
 
-# omyc project/folder structure
-
-(working in progress...)
