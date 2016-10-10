@@ -24,6 +24,15 @@ unless (-w $file) { &exit_with_error(4,"Cannot write config file");}
 %config = &config::read($file);
 $config{lastUpdateOk} = ($config{lastUpdateOk}) ? 1 : 0;
 #
+# if no config, friendly message
+if ( (!$config{hostname}) && (!$config{username}) && (!$config{password}) ) {
+    $config{lastUpdateOk} = 1;
+    $config{lastUpdateMessage} = "No-ip disabled. Nothing to do.";
+    $config{lastUpdateTS} = time;
+    &config::write($file,%config);
+	exit;
+}
+#
 #  check for config fail
 $fail = "";
 if    (!$config{hostname}) { $fail = "Hostname not set" }	

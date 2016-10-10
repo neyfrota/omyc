@@ -322,7 +322,7 @@ get '/noip/status' => sub {
     $status->{timestamp}{lastCheck}  = $config{lastUpdateTS} || 0;
     $status->{timestamp}{now}        = time || 0;
     $status->{timestamp}{seconds}    = $status->{timestamp}{now}-$status->{timestamp}{lastCheck};
-    $status->{time}                  = ($status->{timestamp}{seconds}>0) ? &delta_seconds_in_human_format($status->{timestamp}{seconds}) : "";
+    $status->{time}                  = ( ($status->{timestamp}{seconds}>0) && ($config{lastUpdateTS}>0) ) ? &delta_seconds_in_human_format($status->{timestamp}{seconds}) : "(unknown)";
     #if    (!$config{hostname})  { $status->{ok}=0; $status->{message} = "Config incomplete. Hostname not set" }	
     #elsif (!$config{username})  { $status->{ok}=0; $status->{message} = "Config incomplete. Username not set" }	
     #elsif (!$config{password})  { $status->{ok}=0; $status->{message} = "Config incomplete. Password not set" }

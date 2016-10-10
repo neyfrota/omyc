@@ -130,6 +130,7 @@ rm -f /var/run/crond.pid  >/dev/null 2>/dev/null
 # ================================
 if [ "$development" = "true" ]; then
     echo "Start services in development mode"
+	/omyc/bin/services/noip.update force 
 	/etc/init.d/apache2 restart 
 	/etc/init.d/proftpd restart 
 	/etc/init.d/btsync restart 
@@ -137,6 +138,7 @@ if [ "$development" = "true" ]; then
 	cron -f  >/dev/null 2>/dev/null & 
 else
     echo "Start services in production mode"
+	/omyc/bin/services/noip.update force 
 	/etc/init.d/apache2 restart 
 	/etc/init.d/proftpd restart 
 	/etc/init.d/btsync restart 
