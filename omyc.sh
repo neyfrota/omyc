@@ -100,7 +100,7 @@ fi
 if [ $1 == "rebuild" ]; then
 	docker ps -a | tail -n +2 | awk '{print $1,$2}' | grep omyc-dev | awk '{print $1}' | xargs --no-run-if-empty docker kill 
 	docker ps -a | tail -n +2 | awk '{print $1,$2}' | grep omyc-dev | awk '{print $1}' | xargs --no-run-if-empty docker rm
-	docker images | tail -n +2 | grep omyc-dev | awk '{print $3}' | xargs docker rmi -f
+	docker images | tail -n +2 | grep omyc-dev | awk '{print $3}' | xargs --no-run-if-empty docker rmi -f
 	docker build -t omyc-dev .
 	exit;
 fi
@@ -108,8 +108,17 @@ fi
 if [ $1 == "build" ]; then
 	docker ps -a | tail -n +2 | awk '{print $1,$2}' | grep omyc-dev | awk '{print $1}' | xargs --no-run-if-empty docker kill 
 	docker ps -a | tail -n +2 | awk '{print $1,$2}' | grep omyc-dev | awk '{print $1}' | xargs --no-run-if-empty docker rm
-	docker images | tail -n +2 | grep omyc-dev | awk '{print $3}' | xargs docker rmi -f
+	docker images | tail -n +2 | grep omyc-dev | awk '{print $3}' | xargs --no-run-if-empty docker rmi -f
 	docker build -t omyc-dev .
+	exit;
+fi
+#
+if [ $1 == "push" ]; then
+	docker ps -a | tail -n +2 | awk '{print $1,$2}' | grep "omyc/omyc" | awk '{print $1}' | xargs --no-run-if-empty docker kill 
+	docker ps -a | tail -n +2 | awk '{print $1,$2}' | grep "omyc/omyc" | awk '{print $1}' | xargs --no-run-if-empty docker rm
+	docker images | tail -n +2 | grep "omyc/omyc" | awk '{print $3}' | xargs --no-run-if-empty docker rmi -f
+	docker build -t omyc/omyc .
+	docker push omyc/omyc .
 	exit;
 fi
 #
