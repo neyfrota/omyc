@@ -54,8 +54,8 @@ if (empty($user)) {
 	if (file_exists("/data/users/".$user)) {
 		$homedir = "/data/users/".$user;
 	}
-	if (file_exists("/backup/".$user)) {
-		$backupdir = "/backup/".$user;
+	if (file_exists("/data/users/".$user."/.zfs/snapshot")) {
+		$backupdir = "/data/users/".$user."/.zfs/snapshot";
 	}
 }
 if (empty($homedir)) {
@@ -106,8 +106,7 @@ if (empty($homedir)) {
 					'uploadDeny'    => array('all'),                // All Mimetypes not allowed to upload
 					'uploadAllow'   => array(),// Mimetype `image` and `text/plain` allowed to upload
 					'uploadOrder'   => array('deny', 'allow'),      // allowed Mimetype `image` and `text/plain` only
-					'defaults' 		=> array('read' => true, 'write' => false),
-					'accessControl' => 'access'                     // disable and hide dot starting files (OPTIONAL)
+					'defaults' 		=> array('read' => true, 'write' => false)
 				),
 				array(
 					'driver'        => 'LocalFileSystem',           // driver for accessing file system (REQUIRED)
