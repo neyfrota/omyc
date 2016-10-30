@@ -7,14 +7,19 @@ echo "=========================================="
 # ==========================================
 # Put us in the right path
 # ==========================================
-ABSPATH=`dirname $(readlink -f $0)`
+# readlink works different at osx.
+# ABSPATH=`dirname $(readlink -f $0)`
+# cd $ABSPATH/
+# ..or.. We need detect system to address readlink appropriate
+# ..or.. we give up to knwown absolute running path
+# ..or.. fnd a universal mode
+ABSPATH=`pwd -P`
 cd $ABSPATH/
 if [ ! -f omyc.sh ]
 then
     echo "Oops! I do not know where i am :/"
     exit;
 fi
-
 
 # ==========================================
 # prepare dev data folder
