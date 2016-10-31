@@ -15,13 +15,11 @@
 	    <script src="/resources/bootstrap/js/bootstrap.min.js"		            ></script>
         <script>
             function activateMenu(id) {
-console.log(id);
                 document.getElementById("menu_welcome").classList.remove("active");
                 document.getElementById("menu_files").classList.remove("active");
                 document.getElementById("menu_sync").classList.remove("active");
                 document.getElementById("menu_settings").classList.remove("active");
                 var element = document.getElementById("menu_"+id);
-console.log(element);
                 if (element) {element.classList.add("active");}
 			}
         </script>
