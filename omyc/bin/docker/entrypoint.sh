@@ -73,6 +73,7 @@ chmod -f a-rwx,a+rX,u+w /data/ >/dev/null 2>/dev/null
 chmod -f a-rwx,a+rX,u+w /data/users/ >/dev/null 2>/dev/null
 chmod -Rf a-rwx,u+rwX /data/settings/ >/dev/null 2>/dev/null
 chmod -f a-rwx,u+rwX /etc/btsync/omyc.conf >/dev/null 2>/dev/null
+chmod a+rw /dev/null
 
 
 
@@ -152,6 +153,7 @@ fi
 # keep instance up
 # ================================
 echo "Show logs forever"
+chmod a+rw /dev/null
 tail -f -n 0 /var/log/apache2/* /var/log/proftpd/* /var/log/api.server.log 
 
 
