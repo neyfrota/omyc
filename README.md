@@ -7,7 +7,7 @@ To hack/edit/modify:
 
 * make sure you have docker
 * make sure all exported ports are free 
-* tested at lunux/ubuntu (no idea about win/osx/others)
+* tested at linux/ubuntu/osx (experimental on osx. no idea about others)
 * clone this repo `git clone git@github.com:omyc/docker.git ./`
 * run `./omyc.sh` to known status and commands
 * run `./omyc.sh build` to build devlab image

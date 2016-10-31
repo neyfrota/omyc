@@ -5,15 +5,45 @@ echo "=========================================="
 
 
 # ==========================================
+# osx specifics
+# ==========================================
+export xargs_command="xargs --no-run-if-empty "
+case "$(uname -s)" in
+
+   Darwin)
+     export xargs_command="xargs "
+     export ABSPATH=`pwd -P`
+     ;;
+
+   Linux)
+     export ABSPATH=`dirname $(readlink -f $0)`
+     ;;
+
+   CYGWIN*|MINGW32*|MSYS*)
+     export ABSPATH=`dirname $(readlink -f $0)`
+     ;;
+
+   *)
+     export ABSPATH=`dirname $(readlink -f $0)`
+     ;;
+esac
+
+
+
+
+# ==========================================
 # Put us in the right path
 # ==========================================
-ABSPATH=`dirname $(readlink -f $0)`
 cd $ABSPATH/
 if [ ! -f omyc.sh ]
 then
     echo "Oops! I do not know where i am :/"
     exit;
 fi
+
+
+
+
 
 
 # ==========================================
@@ -98,25 +128,25 @@ if [ $1 == "log" ]; then
 fi
 #
 if [ $1 == "rebuild" ]; then
-	docker ps -a | tail -n +2 | awk '{print $1,$2}' | grep omyc-dev | awk '{print $1}' | xargs --no-run-if-empty docker kill 
-	docker ps -a | tail -n +2 | awk '{print $1,$2}' | grep omyc-dev | awk '{print $1}' | xargs --no-run-if-empty docker rm
-	docker images | tail -n +2 | grep omyc-dev | awk '{print $3}' | xargs --no-run-if-empty docker rmi -f
+	docker ps | tail -n +2 | awk '{print $1,$2}' | grep omyc-dev | awk '{print $1}' | $xargs_command docker kill 
+	docker ps -a | tail -n +2 | awk '{print $1,$2}' | grep omyc-dev | awk '{print $1}' | $xargs_command docker rm
+	docker images | tail -n +2 | grep omyc-dev | awk '{print $3}' | $xargs_command docker rmi -f
 	docker build -t omyc-dev .
 	exit;
 fi
 #
 if [ $1 == "build" ]; then
-	docker ps -a | tail -n +2 | awk '{print $1,$2}' | grep omyc-dev | awk '{print $1}' | xargs --no-run-if-empty docker kill 
-	docker ps -a | tail -n +2 | awk '{print $1,$2}' | grep omyc-dev | awk '{print $1}' | xargs --no-run-if-empty docker rm
-	docker images | tail -n +2 | grep omyc-dev | awk '{print $3}' | xargs --no-run-if-empty docker rmi -f
+	docker ps | tail -n +2 | awk '{print $1,$2}' | grep omyc-dev | awk '{print $1}' | $xargs_command docker kill 
+	docker ps -a | tail -n +2 | awk '{print $1,$2}' | grep omyc-dev | awk '{print $1}' | $xargs_command docker rm
+	docker images | tail -n +2 | grep omyc-dev | awk '{print $3}' | $xargs_command docker rmi -f
 	docker build -t omyc-dev .
 	exit;
 fi
 #
 if [ $1 == "push" ]; then
-	docker ps -a | tail -n +2 | awk '{print $1,$2}' | grep "omyc/omyc" | awk '{print $1}' | xargs --no-run-if-empty docker kill 
-	docker ps -a | tail -n +2 | awk '{print $1,$2}' | grep "omyc/omyc" | awk '{print $1}' | xargs --no-run-if-empty docker rm
-	docker images | tail -n +2 | grep "omyc/omyc" | awk '{print $3}' | xargs --no-run-if-empty docker rmi -f
+	docker ps | tail -n +2 | awk '{print $1,$2}' | grep "omyc/omyc" | awk '{print $1}' | $xargs_command docker kill 
+	docker ps -a | tail -n +2 | awk '{print $1,$2}' | grep "omyc/omyc" | awk '{print $1}' | $xargs_command docker rm
+	docker images | tail -n +2 | grep "omyc/omyc" | awk '{print $3}' | $xargs_command docker rmi -f
 	docker build -t omyc/omyc .
 	docker push omyc/omyc
 	exit;
@@ -125,8 +155,8 @@ fi
 if [ $1 == "destroy" ]; then
 	echo "We need SU permission to remove /tmp/omyc"
 	sudo rm -Rf /tmp/omyc
-	docker ps -a | tail -n +2 | awk '{print $1,$2}' | grep omyc-dev | awk '{print $1}' | xargs --no-run-if-empty docker kill 
-	docker ps -a | tail -n +2 | awk '{print $1,$2}' | grep omyc-dev | awk '{print $1}' | xargs --no-run-if-empty docker rm 
+	docker ps -a | tail -n +2 | awk '{print $1,$2}' | grep omyc-dev | awk '{print $1}' | $xargs_command docker kill 
+	docker ps -a | tail -n +2 | awk '{print $1,$2}' | grep omyc-dev | awk '{print $1}' | $xargs_command docker rm 
 	docker images | tail -n +2 | grep omyc-dev | awk '{print $3}' | xargs docker rmi -f
 	exit;
 fi
@@ -149,7 +179,7 @@ if [ $1 == "start" ]; then
 fi
 #
 if [ $1 == "stop" ]; then
-	docker ps -a | tail -n +2 | awk '{print $1,$2}' | grep omyc-dev | awk '{print $1}' | xargs --no-run-if-empty docker kill 
+	docker ps | tail -n +2 | awk '{print $1,$2}' | grep omyc-dev | awk '{print $1}' | $xargs_command docker kill 
 	set_active_instance_id
 	if [ -z $active_id ]; then
 		echo "No running instance"
