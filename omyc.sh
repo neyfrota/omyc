@@ -118,7 +118,7 @@ if [ $1 == "push" ]; then
 	docker ps -a | tail -n +2 | awk '{print $1,$2}' | grep "omyc/omyc" | awk '{print $1}' | xargs --no-run-if-empty docker rm
 	docker images | tail -n +2 | grep "omyc/omyc" | awk '{print $3}' | xargs --no-run-if-empty docker rmi -f
 	docker build -t omyc/omyc .
-	docker push omyc/omyc .
+	docker push omyc/omyc
 	exit;
 fi
 #
