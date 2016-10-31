@@ -5,7 +5,7 @@ echo "=========================================="
 
 
 # ==========================================
-# osx specifics
+# osx specific
 # ==========================================
 export xargs_command="xargs --no-run-if-empty "
 case "$(uname -s)" in
@@ -157,7 +157,7 @@ if [ $1 == "destroy" ]; then
 	sudo rm -Rf /tmp/omyc
 	docker ps -a | tail -n +2 | awk '{print $1,$2}' | grep omyc-dev | awk '{print $1}' | $xargs_command docker kill 
 	docker ps -a | tail -n +2 | awk '{print $1,$2}' | grep omyc-dev | awk '{print $1}' | $xargs_command docker rm 
-	docker images | tail -n +2 | grep omyc-dev | awk '{print $3}' | xargs docker rmi -f
+	docker images | tail -n +2 | grep omyc-dev | awk '{print $3}' | $xargs_command docker rmi -f
 	exit;
 fi
 #
