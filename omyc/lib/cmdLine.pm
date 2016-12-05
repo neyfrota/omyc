@@ -11,8 +11,8 @@ use Exporter;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
 $VERSION     = 1.00;
 @ISA         = qw(Exporter);
-@EXPORT      = qw(exit_with_error exit_ok print_error print_ok print_debug);
-@EXPORT_OK   = qw(exit_with_error exit_ok print_error print_ok print_debug);
+@EXPORT      = qw(run_command_and_return_array exit_with_error exit_ok print_error print_ok print_debug);
+@EXPORT_OK   = qw(run_command_and_return_array exit_with_error exit_ok print_error print_ok print_debug);
 
 sub exit_with_error {
 	my ($code,$msg) = @_;
@@ -44,6 +44,25 @@ sub print_debug {
 	chomp($msg);
 	#print STDOUT $msg."\n";
 }
+sub run_command_and_return_array {
+	my ($cmd) = @_;
+	my @lines = ();
+    my $ans = `$cmd`;
+    chomp($ans);
+    chomp($ans);
+    my $find = "\r";
+    my $replace = " ";
+    $find = quotemeta $find; # escape regex metachars if present
+    $ans =~ s/$find/$replace/g;
+	foreach (split(/\n/,$ans)){
+		my $l = $_;
+		chomp($l);
+		@lines = (@lines,$l);
+	}
+	return @lines;
+}
+
+
 
 1;
 

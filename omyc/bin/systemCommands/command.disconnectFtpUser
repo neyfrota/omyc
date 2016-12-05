@@ -1,0 +1,45 @@
+#!/usr/bin/perl
+use Data::Dumper;
+use lib '/omyc/lib';# ask perl to look modules in this folder 
+use tools;
+use cmdLine;
+use config;
+
+#
+# read user. reject if wrong
+$user = (@ARGV)[0];
+$user = clean_string($user,"-_");
+unless ( ($user) && ($user eq (@ARGV)[0]) ) {
+	print "Invalid user\n";
+	exit;
+}
+
+#
+# count pids for user
+$count=0;
+foreach(&run_command_and_return_array("/usr/bin/ftpwho $user 2>\&1 ")){
+	#
+	# 0         1         2         3         4         5         6
+	# .123456789.123456789.123456789.123456789.123456789.123456789
+	# standalone FTP daemon [457], up for  2 hrs 06 min
+	#  1018 neyfrota [  0m4s]   0m4s idle
+	# Service class                      -   1 user
+	#
+	if (index($_,"standalone ") eq 0) {next}
+	if (index($_,"Service ") eq 0) {next}
+	#
+	$p = &trim(substr($_,0,5));
+	$u = substr($_,6,100);
+	($u) = split(/ /,$u);
+	#
+	if ($u ne $user) {next}
+	#
+	&run_command_and_return_array("kill -9 $p 2>\&1 ");
+	$count++;
+}
+
+if ($count) {
+	print "$count sessions disconnected for $user\n"
+} else {
+	print "no session disconnected for $user\n"
+}

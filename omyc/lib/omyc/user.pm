@@ -196,6 +196,8 @@ sub delete(){
         rename($folder_bkp,$folder_bkp_old);
     }
     rename($folder_user,$folder_bkp);
+	#
+    `/omyc/bin/systemCommands/add updateBtsyncFiles 2>\&1 `;
     #
     return 1;
 }
@@ -240,8 +242,9 @@ sub passwordChange{
     if ($p ne &clean_string($p,"PASSWORD")) { &_setFail("invalid_password");  return  };
     #    
     `/usr/bin/htpasswd -b $file_users_web "$u" "$p"  >/dev/null 2>/dev/null`;
-    `/bin/echo "$p" | /omyc/bin/ftpasswd --file $file_users_sftp --passwd --name $u --home /data/users/$u --shell /bin/false --uid 33 --gid 33 --stdin   >/dev/null 2>/dev/null`;
-    `chmod -Rf a-rwx,u+rw $file_users_sftp >/dev/null 2>/dev/null`;
+    `/bin/echo "$p" | /usr/sbin/ftpasswd --file $file_users_sftp --passwd --name $u --home /data/users/$u --shell /bin/false --uid 33 --gid 33 --stdin   >/dev/null 2>/dev/null`;
+    `/omyc/bin/systemCommands/add disconnectFtpUser $u 2>\&1 `;
+    #`chmod -Rf a-rwx,u+rw $file_users_sftp >/dev/null 2>/dev/null`;
     return 1;
 }
 sub passwordDestroy{
@@ -251,8 +254,9 @@ sub passwordDestroy{
     if (!&exists($u)) { &_setFail("not_found"); return }
     #    
     `/usr/bin/htpasswd -D $file_users_web "$u"  >/dev/null 2>/dev/null`;
-    `/omyc/bin/ftpasswd --file $file_users_sftp --name $u --delete-user --passwd >/dev/null 2>/dev/null`;
-    `chmod -Rf a-rwx,u+rw $file_users_sftp >/dev/null 2>/dev/null`;
+    `/usr/sbin/ftpasswd --file $file_users_sftp --name $u --delete-user --passwd >/dev/null 2>/dev/null`;
+    `/omyc/bin/systemCommands/add disconnectFtpUser $u 2>\&1 `;
+    #`chmod -Rf a-rwx,u+rw $file_users_sftp >/dev/null 2>/dev/null`;
     return 1;
 }
 sub passwordLock{}

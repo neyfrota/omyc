@@ -1,11 +1,8 @@
 #!/bin/bash
-echo "=========================================="
-echo "OMYC development lab"
-echo "=========================================="
 
 
 # ==========================================
-# osx specific
+# os specific
 # ==========================================
 export xargs_command="xargs --no-run-if-empty "
 case "$(uname -s)" in
@@ -32,12 +29,16 @@ esac
 
 
 # ==========================================
-# Put us in the right path
+# check if we are in right place
 # ==========================================
 cd $ABSPATH/
-if [ ! -f omyc.sh ]
+if [[ -f dev && -f Dockerfile && -d omyc ]]
 then
-    echo "Oops! I do not know where i am :/"
+	echo "=========================================="
+	echo "OMYC development lab"
+	echo "=========================================="
+else
+	echo "Oops! I do not know where i am :/"
     exit;
 fi
 
@@ -55,6 +56,7 @@ then
     echo "Oops! Fail create /tmp/omyc :/"
     exit;
 fi
+
 
 
 # ==========================================

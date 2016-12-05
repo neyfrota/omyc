@@ -296,7 +296,7 @@ post '/noip/config' => sub {
     # save if need
     if ($need_save) {
         &config::write("/data/settings/noip.conf",%config);
-        my $ans = `/bin/services/noip.update force 2>\&1 `;
+        my $ans = `/omyc/bin/systemCommands/add updateNoip 2>\&1 `;
     }
     #
     # output data

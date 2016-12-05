@@ -82,6 +82,7 @@ chmod a+rw /dev/null
 # setup logs
 # ================================
 rm -f /var/log/api.server.log  >/dev/null 2>/dev/null
+rm -f /var/log/systemCommands.log  >/dev/null 2>/dev/null
 rm -f /var/log/apache2/access.log  >/dev/null 2>/dev/null
 rm -f /var/log/apache2/error.log  >/dev/null 2>/dev/null
 rm -f /var/log/proftpd/controls.log  >/dev/null 2>/dev/null
@@ -90,6 +91,7 @@ rm -f /var/log/apache2/other_vhosts_access.log >/dev/null 2>/dev/null
 ln -s /dev/null /var/log/apache2/other_vhosts_access.log >/dev/null 2>/dev/null
 if [ "$development" = "true" ]; then
     echo "Prepare log files for debug"
+	touch /var/log/systemCommands.log  >/dev/null 2>/dev/null
     touch /var/log/api.server.log >/dev/null 2>/dev/null
     touch /var/log/apache2/access.log >/dev/null 2>/dev/null
     touch /var/log/apache2/error.log >/dev/null 2>/dev/null
@@ -97,6 +99,7 @@ if [ "$development" = "true" ]; then
     touch /var/log/proftpd/proftpd.log >/dev/null 2>/dev/null
 else
     # not debug. Lets point all logs to /dev/null so we create less garbage at fs
+	ln -s /dev/null /var/log/systemCommands.log  >/dev/null 2>/dev/null
     ln -s /dev/null /var/log/api.server.log >/dev/null 2>/dev/null
     ln -s /dev/null /var/log/apache2/access.log >/dev/null 2>/dev/null
     ln -s /dev/null /var/log/apache2/error.log >/dev/null 2>/dev/null
@@ -104,9 +107,16 @@ else
     #ln -s /dev/null /var/log/proftpd/controls.log >/dev/null 2>/dev/null
     #ln -s /dev/null /var/log/proftpd/proftpd.log >/dev/null 2>/dev/null
 fi
+rm -f /tmp/systemCommands  >/dev/null 2>/dev/null
+touch /tmp/systemCommands  >/dev/null 2>/dev/null
+chown -Rf www-data.www-data /tmp/systemCommands >/dev/null 2>/dev/null
+chown -Rf www-data.www-data /var/log/systemCommands.log >/dev/null 2>/dev/null
+chown -Rf www-data.www-data /var/log/api.server.log >/dev/null 2>/dev/null
 chown -Rf www-data.www-data /var/log/api.server.log >/dev/null 2>/dev/null
 chown -Rf www-data.www-data /var/log/apache2/ >/dev/null 2>/dev/null
 chown -Rf www-data.www-data /var/log/proftpd/ >/dev/null 2>/dev/null
+chmod -Rf a-rwx,a+rX,u+w /tmp/systemCommands >/dev/null 2>/dev/null
+chmod -Rf a-rwx,a+rX,u+w /var/log/systemCommands.log  >/dev/null 2>/dev/null
 chmod -Rf a-rwx,a+rX,u+w /var/log/api.server.log >/dev/null 2>/dev/null
 chmod -Rf a-rwx,a+rX,u+w /var/log/apache2/ >/dev/null 2>/dev/null
 chmod -Rf a-rwx,a+rX,u+w /var/log/proftpd/ >/dev/null 2>/dev/null
@@ -117,8 +127,9 @@ chmod -Rf a-rwx,a+rX,u+w /var/log/proftpd/ >/dev/null 2>/dev/null
 # ================================
 # setup cron 
 # ================================
-echo "* * * * * /omyc/bin/services/restart.if.need >/dev/null 2>/dev/null " > /tmp/mycron 2>/dev/null
-echo "12 * * * * /omyc/bin/services/noip.update force >/dev/null 2>/dev/null " >> /tmp/mycron 2>/dev/null
+echo "* * * * * /omyc/bin/systemCommands/runQueue >/var/log/systemCommands.log 2>/var/log/systemCommands.log " > /tmp/mycron 2>/dev/null
+echo "20 * * * * /omyc/bin/systemCommands/command.updateNoip force >/dev/null 2>/dev/null " >> /tmp/mycron 2>/dev/null
+echo "30 * * * * /omyc/bin/systemCommands/command.checkSystemServices >/dev/null 2>/dev/null " >> /tmp/mycron 2>/dev/null
 crontab /tmp/mycron >/dev/null 2>/dev/null
 rm /tmp/mycron >/dev/null 2>/dev/null
 killall cron  >/dev/null 2>/dev/null
@@ -131,7 +142,8 @@ rm -f /var/run/crond.pid  >/dev/null 2>/dev/null
 # ================================
 if [ "$development" = "true" ]; then
     echo "Start services in development mode"
-	/omyc/bin/services/noip.update force 
+	/omyc/bin/systemCommands/command.updateNoip force 
+	/omyc/bin/systemCommands/command.updateBtsyncFiles
 	/etc/init.d/apache2 restart 
 	/etc/init.d/proftpd restart 
 	/etc/init.d/btsync restart 
@@ -139,7 +151,8 @@ if [ "$development" = "true" ]; then
 	cron -f  >/dev/null 2>/dev/null & 
 else
     echo "Start services in production mode"
-	/omyc/bin/services/noip.update force 
+	/omyc/bin/systemCommands/command.updateNoip force
+	/omyc/bin/systemCommands/command.updateBtsyncFiles
 	/etc/init.d/apache2 restart 
 	/etc/init.d/proftpd restart 
 	/etc/init.d/btsync restart 

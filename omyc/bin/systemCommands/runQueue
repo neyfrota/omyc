@@ -1,0 +1,48 @@
+#!/usr/bin/perl
+use Data::Dumper;
+use lib '/omyc/lib';# ask perl to look modules in this folder 
+use tools;
+use cmdLine;
+use config;
+
+#
+# define some things
+my $commands_file = "/tmp/systemCommands";
+my $commands_folder = "/omyc/bin/systemCommands/";
+
+#
+# read and purge file asap
+open(IN,$commands_file);
+my @commands = <IN> ; 
+close(IN);
+open(OUT,">$commands_file");
+print OUT "";
+close(OUT);
+#
+# clean command and try run
+foreach (@commands){
+	#
+	my $command_raw = $_;
+	my $command = "";
+	chomp($command_raw);
+	foreach (split(/ /,$command_raw)){
+		$command .= clean_string($_,"-_")." ";
+	}
+	$message = &runCommand($command);
+	if ($message) {print time."|$command|$message\n";}
+	#
+}
+
+
+sub runCommand{
+	my ($command) = @_;
+	my ($c,$a1,$a2,$a3) = split(/ /,$command);
+	#
+	if (!$c) { return "No command"}
+	#
+	unless (-e "$commands_folder/command.$c") { return "invalid command"}
+	#
+	@lines = &run_command_and_return_array("$commands_folder/command.$c $a1 $a2 $a3 2>\&1 ");
+	return join(" ",@lines);
+}
+

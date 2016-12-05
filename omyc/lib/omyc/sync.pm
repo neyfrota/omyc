@@ -128,7 +128,8 @@ sub updateSystem() {
     `chmod -f a-rwx,u+rwX $config_file  >/dev/null 2>/dev/null`;
     `chown -f a-rwx,u+rwX $shares_file  >/dev/null 2>/dev/null`;
     #
-    # now lets trust cron script detect we change /etc/btsync/omyc.conf and restart btsync
+    # schedule a btsync restart
+	`/omyc/bin/systemCommands/add restartBtsync 2>\&1 `;
     #
 }
 # ------------------------------
