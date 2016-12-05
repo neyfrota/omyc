@@ -167,6 +167,6 @@ fi
 # ================================
 echo "Show logs forever"
 chmod a+rw /dev/null
-tail -f -n 0 /var/log/apache2/* /var/log/proftpd/* /var/log/api.server.log 
+tail -f -n 0 /var/log/apache2/* /var/log/proftpd/* /var/log/api.server.log /var/log/api.server.log /var/log/systemCommands.log  /tmp/systemCommands
 
 
