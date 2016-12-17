@@ -77,7 +77,7 @@ if (empty($homedir)) {
 				array(
 					'driver'        => 'LocalFileSystem',           // driver for accessing file system (REQUIRED)
 					'alias'      	=> 'Shared files',
-					'path'          => '/data/shared/',             // path to files (REQUIRED)
+					'path'          => '/data/share/',             // path to files (REQUIRED)
 					'uploadDeny'    => array('all'),                // All Mimetypes not allowed to upload
 					'uploadAllow'   => array(),// Mimetype `image` and `text/plain` allowed to upload
 					'uploadOrder'   => array('deny', 'allow'),      // allowed Mimetype `image` and `text/plain` only
@@ -110,8 +110,8 @@ if (empty($homedir)) {
 				),
 				array(
 					'driver'        => 'LocalFileSystem',           // driver for accessing file system (REQUIRED)
-					'alias'      	=> 'Everybody shared files',
-					'path'          => '/data/shared/',             // path to files (REQUIRED)
+					'alias'      	=> 'Shared files',
+					'path'          => '/data/share/',             // path to files (REQUIRED)
 					'uploadDeny'    => array('all'),                // All Mimetypes not allowed to upload
 					'uploadAllow'   => array(),// Mimetype `image` and `text/plain` allowed to upload
 					'uploadOrder'   => array('deny', 'allow'),      // allowed Mimetype `image` and `text/plain` only

@@ -1,7 +1,7 @@
 
 # Problem...
  
-... our webapp has no permission to kill/hup root based process. Our workaround consist in:
+... our webapp has no permission to kill/hup/touch/do/mess root based process. Our workaround consist in:
 
 * a user based command "/omyc/bin/systemCommands/add" to receive and queue system command 
 * a root based command "/omyc/bin/systemCommands/runQueue" (at cron) that run queued commands
