@@ -1,25 +1,3 @@
-# ============================================================
-#
-# simple document storage
-#
-# ============================================================
-#
-# streamRecord saith unto him, I am the way, the truth, and the life: no man cometh unto the streamRecord data, but by me.
-#
-# normalize zenoradio record engine data.
-# please do not toch data direct, use this library instead 
-# all data stored using storage package
-# we did not export functions so we need use streamRecord::function to make code clear
-# we use entity as function prefix (entity_action, example recordEvent_create)
-# we try to create full CRUD for each entity
-# we have some search and list functions for each entity 
-#
-# Code example:
-# 	after __DATA__
-#
-#
-# ============================================================
-
 
 
 # ------------------------------
