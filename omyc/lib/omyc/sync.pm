@@ -79,8 +79,8 @@ sub updateSystem() {
     # prepare template
     my $buf = "";
     $buf .= "//\n";
-    $buf .= "// DAEMON_UID=www-data\n";
-    $buf .= "// DAEMON_GID=www-data\n";
+    $buf .= "// DAEMON_UID=omyc\n";
+    $buf .= "// DAEMON_GID=omyc\n";
     $buf .= "//\n";
     $buf .= "{\n";
     $buf .= "\t\"device_name\": \"OMYC\",\n";
@@ -101,8 +101,8 @@ sub updateSystem() {
     open(OUT,">$config_file");
     print OUT $buf;
     close(OUT);
-    `chown -f www-data.www-data $config_file  >/dev/null 2>/dev/null`;
-    `chown -f www-data.www-data $shares_file  >/dev/null 2>/dev/null`;
+    `chown -f omyc.omyc $config_file  >/dev/null 2>/dev/null`;
+    `chown -f omyc.omyc $shares_file  >/dev/null 2>/dev/null`;
     `chmod -f a-rwx,u+rwX $config_file  >/dev/null 2>/dev/null`;
     `chown -f a-rwx,u+rwX $shares_file  >/dev/null 2>/dev/null`;
     #

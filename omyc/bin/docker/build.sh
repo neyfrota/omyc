@@ -2,6 +2,10 @@
 
 # TODO: die if not inside docker instance
 #
+# create user.group at id 1000 
+groupadd -g 1000 omyc
+useradd -u 1000 -g 1000 --no-create-home -s /sbin/nologin omyc
+#
 # update repo index
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -y 
@@ -39,6 +43,8 @@ rm -f /etc/apache2/conf-enabled/security.conf
 echo "ServerTokens Minimal" >> /etc/apache2/conf-enabled/security.conf
 echo "ServerSignature Off" >> /etc/apache2/conf-enabled/security.conf
 echo "TraceEnable Off" >> /etc/apache2/conf-enabled/security.conf
+sed -i -e 's/export APACHE_RUN_USER=www-data/export APACHE_RUN_USER=omyc/' /etc/apache2/envvars
+sed -i -e 's/export APACHE_RUN_GROUP=www-data/export APACHE_RUN_GROUP=omyc/' /etc/apache2/envvars
 #
 # install proftp
 apt-get install -y proftpd openssh-server

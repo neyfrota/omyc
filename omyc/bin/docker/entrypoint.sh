@@ -35,7 +35,7 @@ if [ ! -e /data/settings/users.sftp ]; then
 	echo "No users. Create user admin/admin"
     #
 	mkdir /data/users/admin >/dev/null 2>/dev/null
-    chown -Rf www-data.www-data /data/users/admin/ >/dev/null 2>/dev/null
+    chown -Rf omyc.omyc /data/users/admin/ >/dev/null 2>/dev/null
     chmod -Rf a-rwx,u+rwX /data/users/admin/ >/dev/null 2>/dev/null
     #
 	touch /data/settings/users.web >/dev/null 2>/dev/null
@@ -43,7 +43,7 @@ if [ ! -e /data/settings/users.sftp ]; then
 	touch /data/settings/groups.web >/dev/null 2>/dev/null
 	touch /data/settings/groups.sftp >/dev/null 2>/dev/null
     #
-	echo "admin"| /omyc/bin/ftpasswd --file /data/settings/users.sftp --passwd --name admin --home /data/users/admin/ --shell /bin/false --uid 33 --gid 33 --stdin  >/dev/null 2>/dev/null
+	echo "admin"| /usr/sbin/ftpasswd --file /data/settings/users.sftp --passwd --name admin --home /data/users/admin/ --shell /bin/false --uid 1000 --gid 1000 --stdin  >/dev/null 2>/dev/null
 	htpasswd -b /data/settings/users.web admin admin >/dev/null 2>/dev/null
     echo "admin:admin" > /data/settings/groups.web 
 fi
@@ -65,10 +65,10 @@ fi
 # ================================
 # fix permission
 # ================================
-chown -f www-data.www-data /data/ >/dev/null 2>/dev/null
-chown -f www-data.www-data /data/users/ >/dev/null 2>/dev/null
-chown -Rf www-data.www-data /data/settings/ >/dev/null 2>/dev/null
-chown -f www-data.www-data /etc/btsync/omyc.conf >/dev/null 2>/dev/null
+chown -f omyc.omyc /data/ >/dev/null 2>/dev/null
+chown -f omyc.omyc /data/users/ >/dev/null 2>/dev/null
+chown -Rf omyc.omyc /data/settings/ >/dev/null 2>/dev/null
+chown -f omyc.omyc /etc/btsync/omyc.conf >/dev/null 2>/dev/null
 chmod -f a-rwx,a+rX,u+w /data/ >/dev/null 2>/dev/null
 chmod -f a-rwx,a+rX,u+w /data/users/ >/dev/null 2>/dev/null
 chmod -Rf a-rwx,u+rwX /data/settings/ >/dev/null 2>/dev/null
@@ -109,12 +109,12 @@ else
 fi
 rm -f /tmp/systemCommands  >/dev/null 2>/dev/null
 touch /tmp/systemCommands  >/dev/null 2>/dev/null
-chown -Rf www-data.www-data /tmp/systemCommands >/dev/null 2>/dev/null
-chown -Rf www-data.www-data /var/log/systemCommands.log >/dev/null 2>/dev/null
-chown -Rf www-data.www-data /var/log/api.server.log >/dev/null 2>/dev/null
-chown -Rf www-data.www-data /var/log/api.server.log >/dev/null 2>/dev/null
-chown -Rf www-data.www-data /var/log/apache2/ >/dev/null 2>/dev/null
-chown -Rf www-data.www-data /var/log/proftpd/ >/dev/null 2>/dev/null
+chown -Rf omyc.omyc /tmp/systemCommands >/dev/null 2>/dev/null
+chown -Rf omyc.omyc /var/log/systemCommands.log >/dev/null 2>/dev/null
+chown -Rf omyc.omyc /var/log/api.server.log >/dev/null 2>/dev/null
+chown -Rf omyc.omyc /var/log/api.server.log >/dev/null 2>/dev/null
+chown -Rf omyc.omyc /var/log/apache2/ >/dev/null 2>/dev/null
+chown -Rf omyc.omyc /var/log/proftpd/ >/dev/null 2>/dev/null
 chmod -Rf a-rwx,a+rX,u+w /tmp/systemCommands >/dev/null 2>/dev/null
 chmod -Rf a-rwx,a+rX,u+w /var/log/systemCommands.log  >/dev/null 2>/dev/null
 chmod -Rf a-rwx,a+rX,u+w /var/log/api.server.log >/dev/null 2>/dev/null
@@ -147,7 +147,7 @@ if [ "$development" = "true" ]; then
 	/etc/init.d/apache2 restart 
 	/etc/init.d/proftpd restart 
 	/etc/init.d/btsync restart 
-	/usr/bin/sudo -u www-data /usr/bin/morbo -w /omyc/bin/api.server.pl -w /omyc/lib/ -v -l http://127.0.0.1:8080 /omyc/bin/api.server.pl  >>/var/log/api.server.log 2>>/var/log/api.server.log &
+	/usr/bin/sudo -u omyc /usr/bin/morbo -w /omyc/bin/api.server.pl -w /omyc/lib/ -v -l http://127.0.0.1:8080 /omyc/bin/api.server.pl  >>/var/log/api.server.log 2>>/var/log/api.server.log &
 	cron -f  >/dev/null 2>/dev/null & 
 else
     echo "Start services in production mode"
@@ -156,7 +156,7 @@ else
 	/etc/init.d/apache2 restart 
 	/etc/init.d/proftpd restart 
 	/etc/init.d/btsync restart 
-	/usr/bin/sudo -u www-data /usr/bin/morbo -l http://127.0.0.1:8080 /omyc/bin/api.server.pl  >>/dev/null 2>>/dev/null &
+	/usr/bin/sudo -u omyc /usr/bin/morbo -l http://127.0.0.1:8080 /omyc/bin/api.server.pl  >>/dev/null 2>>/dev/null &
 	cron -f  >/dev/null 2>/dev/null & 
 fi
 
