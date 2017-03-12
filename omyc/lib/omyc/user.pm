@@ -220,7 +220,7 @@ sub passwordChange{
     if ($p ne &clean_string($p,"PASSWORD")) { &_setFail("invalid_password");  return  };
     #    
     `/usr/bin/htpasswd -b $file_users_web "$u" "$p"  >/dev/null 2>/dev/null`;
-    `/bin/echo "$p" | /usr/sbin/ftpasswd --file $file_users_sftp --passwd --name $u --home /data/users/$u --shell /bin/false --uid 33 --gid 33 --stdin   >/dev/null 2>/dev/null`;
+    `/bin/echo "$p" | /usr/sbin/ftpasswd --file $file_users_sftp --passwd --name $u --home /data/users/$u --shell /bin/false --uid 1000 --gid 1000 --stdin   >/dev/null 2>/dev/null`;
     `/omyc/bin/systemCommands/add disconnectFtpUser $u 2>\&1 `;
     #`chmod -Rf a-rwx,u+rw $file_users_sftp >/dev/null 2>/dev/null`;
     return 1;
