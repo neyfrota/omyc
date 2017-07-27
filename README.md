@@ -33,7 +33,7 @@ It takes one command line to start a OMYC instance.</p>
 * no need pull github repo. We use image hosted at hub.docker
 * make sure you have docker
 * make sure you have all exposed ports free (22, 80, 443, 55555)
-* start omyc/main docker image (point to data folder at /tmp/data and expose ports)
+* start omyc/main docker image (point to data folder at /tmp/data and expose ports) 
 ```
 docker run -d \
 	-v /tmp/data:/data \
