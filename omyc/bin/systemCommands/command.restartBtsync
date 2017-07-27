@@ -1,3 +1,15 @@
 #!/bin/bash
-/omyc/bin/rslsync.service restart
-echo "BTsync restarted"
+#/omyc/bin/rslsync.service restart
+
+echo "Stop btsync"
+kill -9  `cat /data/settings/btsync/btsync.pid`
+sleep 1
+
+echo "Clean btsync"
+pkill rslsync
+sleep 1
+
+echo "Start btsync"
+/omyc/bin/rslsync --config /etc/btsync.conf  
+
+echo "Btsync restarted"

@@ -43,6 +43,6 @@ sub runCommand{
 	unless (-e "$commands_folder/command.$c") { return "invalid command"}
 	#
 	@lines = &run_command_and_return_array("$commands_folder/command.$c $a1 $a2 $a3 2>\&1 ");
-	return join(" ",@lines);
+	return join(" :: ",@lines);
 }
 

@@ -167,7 +167,7 @@ sub btsyncSecretNew {
 	#   0.........1.........2.........3..
 	#	AA5525XRVDRIKHLOXNTKDEKSS2IVOC4GV
 	#  "ANCAFEJUP6MYMF5Q66UVFUAVV76RRFANI : 33"
-	my $cmd = "/omyc/bin/rslsync --generate-secret";
+	my $cmd = "/omyc/bin/rslsync --config /etc/btsync.conf --generate-secret";
 	my $ans = &clean_string(`$cmd`);
 	my $out = "";
 	if ($ans) {
@@ -184,7 +184,7 @@ sub btsyncSecretToReadOnly{
 	my $out = "";
 	if ($id) {
 		if (length($id) >28) {
-			my $cmd = "/omyc/bin/rslsync --get-ro-secret $id";
+			my $cmd = "/omyc/bin/rslsync --config /etc/btsync.conf --get-ro-secret $id";
 			my $ans = &clean_string(`$cmd`);
 			if ($ans) {
 				if (length($ans) > 28) {
