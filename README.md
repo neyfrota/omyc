@@ -41,7 +41,7 @@ docker run -d \
 	-p 80:80 \
 	-p 443:443 \
 	-p 55555:55555 \
-	omyc/omyc</pre>
+	omyc/omyc
 ```
 * open your browser at https://127.0.0.1 (or host ip)
 * first user is admin password admin. CHANGE THIS ASAP
