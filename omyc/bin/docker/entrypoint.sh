@@ -24,7 +24,7 @@ mkdir /data/settings/btsync >/dev/null 2>/dev/null
 mkdir /data/settings/cert >/dev/null 2>/dev/null
 touch /data/settings/noip.conf >/dev/null 2>/dev/null
 touch /data/settings/sync.conf >/dev/null 2>/dev/null
-touch /etc/btsync/omyc.conf >/dev/null 2>/dev/null
+touch /etc/btsync.conf >/dev/null 2>/dev/null
 
 
 
@@ -68,11 +68,11 @@ fi
 chown -f omyc.omyc /data/ >/dev/null 2>/dev/null
 chown -f omyc.omyc /data/users/ >/dev/null 2>/dev/null
 chown -Rf omyc.omyc /data/settings/ >/dev/null 2>/dev/null
-chown -f omyc.omyc /etc/btsync/omyc.conf >/dev/null 2>/dev/null
+chown -f omyc.omyc /etc/btsync.conf >/dev/null 2>/dev/null
 chmod -f a-rwx,a+rX,u+w /data/ >/dev/null 2>/dev/null
 chmod -f a-rwx,a+rX,u+w /data/users/ >/dev/null 2>/dev/null
 chmod -Rf a-rwx,u+rwX /data/settings/ >/dev/null 2>/dev/null
-chmod -f a-rwx,u+rwX /etc/btsync/omyc.conf >/dev/null 2>/dev/null
+chmod -f a-rwx,u+rw /etc/btsync.conf >/dev/null 2>/dev/null
 chmod a+rw /dev/null
 
 
@@ -144,18 +144,18 @@ if [ "$development" = "true" ]; then
     echo "Start services in development mode"
 	/omyc/bin/systemCommands/command.updateNoip force 
 	/omyc/bin/systemCommands/command.updateBtsyncFiles
+	/omyc/bin/systemCommands/command.restartBtsync
 	/etc/init.d/apache2 restart 
 	/etc/init.d/proftpd restart 
-	/etc/init.d/btsync restart 
 	/usr/bin/sudo -u omyc /usr/bin/morbo -w /omyc/bin/api.server.pl -w /omyc/lib/ -v -l http://127.0.0.1:8080 /omyc/bin/api.server.pl  >>/var/log/api.server.log 2>>/var/log/api.server.log &
 	cron -f  >/dev/null 2>/dev/null & 
 else
     echo "Start services in production mode"
 	/omyc/bin/systemCommands/command.updateNoip force
 	/omyc/bin/systemCommands/command.updateBtsyncFiles
+	/omyc/bin/systemCommands/command.restartBtsync
 	/etc/init.d/apache2 restart 
 	/etc/init.d/proftpd restart 
-	/etc/init.d/btsync restart 
 	/usr/bin/sudo -u omyc /usr/bin/morbo -l http://127.0.0.1:8080 /omyc/bin/api.server.pl  >>/dev/null 2>>/dev/null &
 	cron -f  >/dev/null 2>/dev/null & 
 fi

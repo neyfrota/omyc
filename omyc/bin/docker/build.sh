@@ -5,17 +5,21 @@
 # create user.group at id 1000 
 groupadd -g 1000 omyc
 useradd -u 1000 -g 1000 --no-create-home -s /sbin/nologin omyc
+
 #
 # update repo index
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -y 
 apt-get install -y software-properties-common
-#
-# install btsync
-add-apt-repository -y ppa:tuxpoldo/btsync
-apt-get update -y 
-apt-get install -y btsync
-rm -f /etc/btsync/*.conf
+
+# btsync now is local at project folder, so we update in sync with omyc
+# #
+# # install btsync
+# add-apt-repository -y ppa:tuxpoldo/btsync
+# apt-get update -y 
+# apt-get install -y btsync
+# rm -f /etc/btsync/*.conf
+
 #
 # install webapp resources
 apt-get install -y libmojolicious-perl libtimedate-perl apache2 php5 php5-cli libapache2-mod-php5 php5-gd php5-json php5-curl apache2-utils libjson-perl liburi-perl dnsutils curl 

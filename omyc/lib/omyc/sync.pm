@@ -20,7 +20,7 @@ $error = "";
 # ------------------------------
 use vars qw($shares_file $config_file);
 $shares_file    = "/data/settings/sync.conf";
-$config_file    = "/etc/btsync/omyc.conf";
+$config_file    = "/etc/btsync.conf";
 #$config_file    = "/data/settings/btsync.conf";
 # ------------------------------
 
@@ -31,10 +31,10 @@ $config_file    = "/etc/btsync/omyc.conf";
 # ------------------------------
 sub updateSystem() {
     #
-    # update /etc/btsync/omyc.conf with sync::databaseRead()
+    # update /etc/btsync.conf with sync::databaseRead()
     # do not restart btsync.
     # We probably have no permission to kill/hup btsync
-    # we have a cron script (run as root) that check changes at /etc/btsync/omyc.conf and kill/hup
+    # we have a cron script (run as root) that check changes at /etc/btsync.conf and kill/hup
     #
     # get shares
 	my %shares = &omyc::sync::databaseRead();
@@ -71,6 +71,7 @@ sub updateSystem() {
         $i .= "\t\t{ \n";
         $i .= "\t\t\t\"secret\" : \"$secret\",  \n";
         $i .= "\t\t\t\"dir\" : \"$sync_folder\",  \n";
+        $i .= "\t\t\t\"selective_sync\" : false,  \n";
         $i .= "\t\t\t\"use_sync_trash\" : false  \n";
         $i .= "\t\t}";
         push @shares_list,$i;
@@ -78,14 +79,12 @@ sub updateSystem() {
     #
     # prepare template
     my $buf = "";
-    $buf .= "//\n";
-    $buf .= "// DAEMON_UID=omyc\n";
-    $buf .= "// DAEMON_GID=omyc\n";
-    $buf .= "//\n";
     $buf .= "{\n";
     $buf .= "\t\"device_name\": \"OMYC\",\n";
     $buf .= "\t\"listening_port\" : 55555,\n";
+    $buf .= "\t\"send_statistics\" : false,\n";
     $buf .= "\t\"storage_path\": \"/data/settings/btsync\",\n";
+    $buf .= "\t\"pid_file\": \"/data/settings/btsync/btsync.pid\",\n";
     $buf .= "\t\"check_for_updates\" : false,\n";
     $buf .= "\t\"use_upnp\" : true,\n";
     $buf .= "\t\"download_limit\" : 0,\n";
@@ -168,7 +167,7 @@ sub btsyncSecretNew {
 	#   0.........1.........2.........3..
 	#	AA5525XRVDRIKHLOXNTKDEKSS2IVOC4GV
 	#  "ANCAFEJUP6MYMF5Q66UVFUAVV76RRFANI : 33"
-	my $cmd = "/usr/lib/btsync/btsync-daemon --generate-secret";
+	my $cmd = "/omyc/bin/rslsync --generate-secret";
 	my $ans = &clean_string(`$cmd`);
 	my $out = "";
 	if ($ans) {
@@ -185,7 +184,7 @@ sub btsyncSecretToReadOnly{
 	my $out = "";
 	if ($id) {
 		if (length($id) >28) {
-			my $cmd = "/usr/lib/btsync/btsync-daemon --get-ro-secret $id";
+			my $cmd = "/omyc/bin/rslsync --get-ro-secret $id";
 			my $ans = &clean_string(`$cmd`);
 			if ($ans) {
 				if (length($ans) > 28) {
