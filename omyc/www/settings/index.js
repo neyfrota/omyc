@@ -14,12 +14,7 @@ app.config(['$routeProvider',
 		when('/users',			    {templateUrl: 'views/usersList/view.html',	    controller: 'usersList'		    }).
 		when('/users/add',			{templateUrl: 'views/usersItem/view.html',	    controller: 'usersItem'		    }).
 		when('/users/:id',			{templateUrl: 'views/usersItem/view.html',	    controller: 'usersItem'		    }).
-		when('/system',			    {templateUrl: 'views/system/view.html',	        controller: 'system'	        }).
 		otherwise({redirectTo: '/account/'});
 	}
 ]);
 // ============================================================================
-
-
-
-

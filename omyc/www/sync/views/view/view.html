@@ -6,7 +6,7 @@
         <div class="col-sm-3">
             <h3 style="margin-top:0px;">Folder detail</h3>
             <p>
-                Install <a target=_blank href="https://www.getsync.com/features">BitTorrent sync</a> and use secret keys to sync this folder with other devices
+                Install <a target=_blank href="https://www.resilio.com/individuals/">BitTorrent sync</a> and use secret keys to sync this folder with other devices
             </p>
         </div>
         <div class="col-sm-9">
@@ -26,19 +26,19 @@
                         <div class="radio" ng-hide="!item.secret_rw" style="margin-top:0px; margin-bottom:5px;">
                             <label>
                                 <input type="radio" name="optionsRadios" value="rw" ng-model="secretToShow" checked>
-                                Show full access secret key 
+                                Show full access secret key
                             </label>
                         </div>
                         <div class="radio" ng-hide="!item.secret_ro" style="margin-top:0px; margin-bottom:5px;">
                             <label>
                                 <input type="radio" name="optionsRadios" value="ro" ng-model="secretToShow" >
-                                Show read only secret key 
+                                Show read only secret key
                             </label>
                         </div>
                         <div class="radio" ng-hide="!item.secret_ext" style="margin-top:0px; margin-bottom:5px;">
                             <label>
                                 <input type="radio" name="optionsRadios" value="ext" ng-model="secretToShow" >
-                                Show external folder secret key 
+                                Show external folder secret key
                             </label>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
 
 
                 <div class="alert alert-danger" ng-hide="!api.response.error"><b>Fail!</b> {{api.response.error.message}}</div>
-    
+
                 <div class="btn-group">
                     <button type="button" class="btn btn-default" ng-click="clickCancel()">Back</button>
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Stop sync this folder</button>
@@ -79,8 +79,7 @@
                 </div>
 
 
-            </div>            
+            </div>
         </div>
     </div>
 </div>
-

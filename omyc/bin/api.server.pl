@@ -3,12 +3,12 @@
 # load all we need
 #
 # ===============================================
-# 
+#
 use Mojolicious::Lite;					# because we like the easy way : ) cpanmin.pl Mojolicious::Lite
 use Mojo::JSON;
 use Data::Dumper;
 use Digest::MD5 qw(md5 md5_hex md5_base64);
-use lib '/omyc/lib';# ask perl to look modules in this folder 
+use lib '/omyc/lib';# ask perl to look modules in this folder
 use tools; 			# give us trim, clean strings and other tools. Nice to have it
 use config;
 use omyc::user;
@@ -27,7 +27,7 @@ app->config(hypnotoad => {listen => ['http://127.0.0.1:3000'], workers=>2});
 #
 # ===============================================
 helper activeUserIsAdmin => sub {
-    #return 1; 
+    #return 1;
     my $self  = shift;
 	my $user = &clean_string($self->req->headers->header('REMOTE_USER')."");
     if (!$user) {return 0}
@@ -36,12 +36,12 @@ helper activeUserIsAdmin => sub {
     if ($info->{isAdmin}) {return 1}
     return 0
 };
-#under sub {
+# under sub {
 #    my $self  = shift;
 #    #my $user = $c->activeUser;
 #	# disable authentication, if set above
 #	return 1;
-#};
+# };
 # ===============================================
 
 
@@ -150,7 +150,7 @@ post '/users/:username' => sub {
     if (exists($json_data->{isAdmin})) {
         $info_need_update= 1;
         $info->{isAdmin} = ($json_data->{isAdmin}) ? 1 : 0;
-    }    
+    }
 	if ($username eq &clean_string($self->req->headers->header('REMOTE_USER')."") ) {
         if (!$info->{isAdmin}) {
             return $self->render(json => {error => { code=>"remove_own_permission",    message => "Cannot remove your own permission" 	} });
@@ -224,226 +224,10 @@ del '/users/:username' => sub {
 
 # ===============================================
 #
-# /noip/ endpoints
-#
-# ===============================================
-get '/noip/config' => sub {
-    my $self  = shift;
-    #
-    # check permission
-    if (!$self->activeUserIsAdmin) {return $self->render(json => {error => { code=>"NO_PERMISSION", message => "No permission"} }); }
-    #
-    # get config
-    my %config = &config::read("/data/settings/noip.conf");
-    #
-    # output data
-	my $data ;
-	$data->{hostname}	= $config{hostname} || "";
-	$data->{username}	= $config{username} || "";
-	$data->{password}	= $config{password} || "";
-	return $self->render(json => {config=>$data});
-};
-post '/noip/config' => sub {
-    my $self  = shift;
-    #
-    # check permission
-    if (!$self->activeUserIsAdmin) {return $self->render(json => {error => { code=>"no_permission", message => "No permission"} }); }
-    #
-    # get config
-    my %config = &config::read("/data/settings/noip.conf");
-    my $need_save = 0;
-    my $tmp = "";
-    #
-	# get data from json
-	my $json_data	    = $self->req->json || {};
-    #
-    # hostname
-    if (exists($json_data->{hostname})) {
-        $tmp = substr(&clean_string($json_data->{hostname},"PASSWORD"),0,1024);
-        #if (!$tmp)			                { return $self->render(json => {error => { code=>"hostname_empty", 	    message => "empty hostname" 	} });}
-        if ($tmp ne $json_data->{hostname}) { return $self->render(json => {error => { code=>"hostname_invalid", 	message => "invalid hostname" 	} });}
-        $config{hostname} = $tmp;
-        $config{lastUpdateMessage}		= "Update in queue. Please wait.";
-        $config{lastUpdateNoipResponse}	= "";
-        $config{lastUpdateOk}			= 1;
-        $need_save = 1;
-    }
-    #
-    # username
-    if (exists($json_data->{username})) {
-        $tmp = substr(&clean_string($json_data->{username},"PASSWORD"),0,1024);
-        #if (!$tmp)			                { return $self->render(json => {error => { code=>"username_empty", 	    message => "empty username" 	} });}
-        if ($tmp ne $json_data->{username}) { return $self->render(json => {error => { code=>"username_invalid", 	message => "invalid username" 	} });}
-        $config{username} = $tmp;
-        $config{lastUpdateMessage}		= "Update in queue. Please wait.";
-        $config{lastUpdateNoipResponse}	= "";
-        $config{lastUpdateOk}			= 1;
-        $need_save = 1;
-    }
-    #
-    # password
-    if (exists($json_data->{password})) {
-        $tmp = substr(&clean_string($json_data->{password},"PASSWORD"),0,1024);
-        #if (!$tmp)			                { return $self->render(json => {error => { code=>"password_empty", 	    message => "empty password" 	} });}
-        if ($tmp ne $json_data->{password}) { return $self->render(json => {error => { code=>"password_invalid", 	message => "invalid password" 	} });}
-        $config{password} = $tmp;
-        $config{lastUpdateMessage}		= "Update in queue. Please wait.";
-        $config{lastUpdateNoipResponse}	= "";
-        $config{lastUpdateOk}			= 1;
-        $need_save = 1;
-    }
-    #
-    # save if need
-    if ($need_save) {
-        &config::write("/data/settings/noip.conf",%config);
-        my $ans = `/omyc/bin/systemCommands/add updateNoip 2>\&1 `;
-    }
-    #
-    # output data
-    %config = &config::read("/data/settings/noip.conf");
-	my $data ;
-	$data->{hostname}	= $config{hostname} || "";
-	$data->{username}	= $config{username} || "";
-	$data->{password}	= $config{password} || "";
-	return $self->render(json => {config=>$data});
-};
-get '/noip/status' => sub {
-    my $self  = shift;
-	my $status ;
-    #
-    # check permission
-    if (!$self->activeUserIsAdmin) {return $self->render(json => {error => { code=>"NO_PERMISSION", message => "No permission"} }); }
-    #
-    # get config
-    my %config = &config::read("/data/settings/noip.conf");
-    #
-    $status->{message}               = $config{lastUpdateMessage} || "Unknown status";
-    $status->{ok}                    = ($config{lastUpdateOk}) ? 1 : 0;
-    $status->{timestamp}{lastCheck}  = $config{lastUpdateTS} || 0;
-    $status->{timestamp}{now}        = time || 0;
-    $status->{timestamp}{seconds}    = $status->{timestamp}{now}-$status->{timestamp}{lastCheck};
-    $status->{time}                  = ( ($status->{timestamp}{seconds}>0) && ($config{lastUpdateTS}>0) ) ? &delta_seconds_in_human_format($status->{timestamp}{seconds}) : "(unknown)";
-    #if    (!$config{hostname})  { $status->{ok}=0; $status->{message} = "Config incomplete. Hostname not set" }	
-    #elsif (!$config{username})  { $status->{ok}=0; $status->{message} = "Config incomplete. Username not set" }	
-    #elsif (!$config{password})  { $status->{ok}=0; $status->{message} = "Config incomplete. Password not set" }
-    #
-    # output data
-	return $self->render(json => {status=>$status});
-};
-# ===============================================
-
-
-
-
-# ===============================================
-#
-# /certificate/ endpoints
-#
-# ===============================================
-get  '/certificate'             => sub {
-    my $self  = shift;
-    #
-    # check permission
-    if (!$self->activeUserIsAdmin) {return $self->render(json => {error => { code=>"NO_PERMISSION", message => "No permission"} }); }
-    #
-    # start response
-	my $response ;
-    #
-    my %data= &config::read("/data/settings/cert/custom.conf");
-	#
-	# we always update this expensive check and save at conf so other systems can cheap read
-	$data{active} = 0;
-	if (-e "/data/settings/cert/custom.crt") {
-		if (-e "/data/settings/cert/active.crt") {
-			my $sig1 = `md5sum /data/settings/cert/active.crt`;
-			my $sig2 = `md5sum /data/settings/cert/custom.crt`;
-			chomp($sig1);
-			chomp($sig2);
-			$sig1 = substr($sig1,0,32);
-			$sig2 = substr($sig2,0,32);
-			if ( (length($sig1) eq 32) && ($sig1 eq $sig2) ) {
-				$data{active} = 1;
-			}
-		}
-	}
-    &config::write("/data/settings/cert/custom.conf",%data);
-	#
-	$response->{active}		= ($data{active}) ? \1 : \0;
-	$response->{hostname}	= $data{hostname} || "";
-	$response->{email}		= $data{email} || "";
-	#
-	$response->{resources}->{key}	= (-e "/data/settings/cert/custom.key") ? \1 : \0;
-	$response->{resources}->{csr}	= (-e "/data/settings/cert/custom.csr") ? \1 : \0;
-	$response->{resources}->{crt}	= (-e "/data/settings/cert/custom.crt") ? \1 : \0;
-	$response->{resources}->{ca}	= (-e "/data/settings/cert/custom.ca") ? \1 : \0;
-	#
-	return $self->render(json => {certificate=>$response});
-	
-};
-post '/certificate/activate'    => sub { my $self  = shift;return $self->render(json => {error => { code=>"NOT_IMPLEMENTED", message => "Not implemented"} }); };
-post '/certificate/deactivate'  => sub { my $self  = shift;return $self->render(json => {error => { code=>"NOT_IMPLEMENTED", message => "Not implemented"} }); };
-get  '/certificate/key'         => sub {
-    my $self  = shift;
-    #
-    # check permission
-    if (!$self->activeUserIsAdmin) {return $self->render(json => {error => { code=>"NO_PERMISSION", message => "No permission"} }); }
-    #
-    # start response
-	my $response ;
-	$response->{key}	= (-e "/data/settings/cert/custom.key") ? \1 : \0;
-	#
-	return $self->render(json => {certificate=>$response});
-};
-post '/certificate/key'         => sub {
-    my $self  = shift;
-    #
-    # check permission
-    if (!$self->activeUserIsAdmin) {return $self->render(json => {error => { code=>"NO_PERMISSION", message => "No permission"} }); }
-    if (-e "/data/settings/cert/custom.key") {return $self->render(json => {error => { code=>"KEY_EXISTS", message => "Cannot create key over actual key"} }); }
-    if (-e "/data/settings/cert/custom.csr") {return $self->render(json => {error => { code=>"CSR_EXISTS", message => "Cannot create key with valid CSR"} }); }
-    if (-e "/data/settings/cert/custom.crt") {return $self->render(json => {error => { code=>"CRT_EXISTS", message => "Cannot create key with valid certificate"} }); }
-	#
-    #
-    # start response
-	my $response ;
-	$response->{key} = \0;
-	return $self->render(json => {certificate=>$response});
-};
-del  '/certificate/key'         => sub {
-    my $self  = shift;
-    #
-    # check permission
-    if (!$self->activeUserIsAdmin) {return $self->render(json => {error => { code=>"NO_PERMISSION", message => "No permission"} }); }
-    if (-e "/data/settings/cert/custom.csr") {return $self->render(json => {error => { code=>"CSR_EXISTS", message => "Cannot delete key with valid CSR"} }); }
-    if (-e "/data/settings/cert/custom.crt") {return $self->render(json => {error => { code=>"CRT_EXISTS", message => "Cannot delete key with valid certificate"} }); }
-	#
-	unlink("/data/settings/cert/custom.key");
-    #
-    # start response
-	my $response ;
-	$response->{key} = \0;
-	return $self->render(json => {certificate=>$response});
-};
-get  '/certificate/csr'         => sub { my $self  = shift;return $self->render(json => {error => { code=>"NOT_IMPLEMENTED", message => "Not implemented"} }); };
-post '/certificate/csr'         => sub { my $self  = shift;return $self->render(json => {error => { code=>"NOT_IMPLEMENTED", message => "Not implemented"} }); };
-del  '/certificate/csr'         => sub { my $self  = shift;return $self->render(json => {error => { code=>"NOT_IMPLEMENTED", message => "Not implemented"} }); };
-get  '/certificate/crt'         => sub { my $self  = shift;return $self->render(json => {error => { code=>"NOT_IMPLEMENTED", message => "Not implemented"} }); };
-post '/certificate/crt'         => sub { my $self  = shift;return $self->render(json => {error => { code=>"NOT_IMPLEMENTED", message => "Not implemented"} }); };
-del  '/certificate/crt'         => sub { my $self  = shift;return $self->render(json => {error => { code=>"NOT_IMPLEMENTED", message => "Not implemented"} }); };
-get  '/certificate/ca'          => sub { my $self  = shift;return $self->render(json => {error => { code=>"NOT_IMPLEMENTED", message => "Not implemented"} }); };
-post '/certificate/ca'          => sub { my $self  = shift;return $self->render(json => {error => { code=>"NOT_IMPLEMENTED", message => "Not implemented"} }); };
-del  '/certificate/ca'          => sub { my $self  = shift;return $self->render(json => {error => { code=>"NOT_IMPLEMENTED", message => "Not implemented"} }); };
-# ===============================================
-
-
-
-
-# ===============================================
-#
 # /account/ endpoints
 #
 # ===============================================
-get '/user/' => sub { 
+get '/user/' => sub {
     my $self  = shift;
     #
     # check user
@@ -459,7 +243,7 @@ get '/user/' => sub {
     delete($data->{user}->{homedir}); # hide some info we do not want public
 	return $self->render(json => $data);
 };
-post '/user/passwordChange' 	=> sub {	
+post '/user/passwordChange' 	=> sub {
     my $self  = shift;
     #
     # TODO. Brute force fuse by ip/user/whatever. Return same fail_change error message to obfuscate fuse
@@ -527,12 +311,12 @@ post '/user/browseFolder/'	=> sub {
     while(readdir DIR) {
         if ($_ eq ".") { next }
         if ($_ eq "..") { next }
-        if (substr($_,0,1) eq ".") { next }	
+        if (substr($_,0,1) eq ".") { next }
         if (-d "$userHomedir$folder/$_") { @subfolders = (@subfolders,$_); }
     }
     closedir(DIR);
     #
-    # output 
+    # output
 	my $data ;
 	$data->{folder}	= $folder || "/";
 	$data->{subFolders}	= \@subfolders;
@@ -548,7 +332,7 @@ post '/user/browseFolder/'	=> sub {
 # /sync/ endpoints
 #
 # ===============================================
-get  '/sync/' 	=> sub {	
+get  '/sync/' 	=> sub {
 	my $self  = shift;
     #
     # check user
@@ -701,7 +485,7 @@ under sub {
 	# disable authentication, if set above
 	return 1;
 };
-get  '/test' 	=> sub {	
+get  '/test' 	=> sub {
 	my $self  = shift;
 	#
 	my $test_counter = $self->session->{test_counter} || 0;
@@ -718,7 +502,7 @@ get  '/test' 	=> sub {
 	#
 	return $self->render(json => $data);
 };
-post '/test' 	=> sub {	
+post '/test' 	=> sub {
     my $self  = shift;
 	#
 	# get data from json
@@ -737,7 +521,7 @@ post '/test' 	=> sub {
 	#
 	return $self->render(json => $data);
 };
-del  '/test' 	=> sub {	
+del  '/test' 	=> sub {
 	my $self  = shift;
 	#
 	# get data from json
@@ -787,7 +571,7 @@ options '*' => sub {
 };
 any '/' => sub {
 	# anything else, i guess its some of our apps hit a wrong place.
-	# we can return a nice json response 
+	# we can return a nice json response
 	my $self = shift;
 	$self->res->code(200);
 	#$self->res->message('Not Found');
@@ -805,7 +589,7 @@ any '/' => sub {
 };
 any '/*' => sub {
 	# anything else, i guess its some of our apps hit a wrong place.
-	# we can return a nice json response 
+	# we can return a nice json response
 	my $self = shift;
 	$self->res->code(200);
 	#$self->res->message('Not Found');

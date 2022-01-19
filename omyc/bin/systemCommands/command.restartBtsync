@@ -10,6 +10,4 @@ pkill rslsync
 sleep 1
 
 echo "Start btsync"
-/omyc/bin/rslsync --config /etc/btsync.conf  
-
-echo "Btsync restarted"
+su omyc -c "/omyc/bin/rslsync --config /etc/btsync.conf "

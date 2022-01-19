@@ -7,22 +7,18 @@
 		<script src="views/usersItem/view.js"	    ></script>
 		<script src="views/account/view.js"         ></script>
 		<script src="views/accountPassword/view.js" ></script>
-		<script src="views/system/view.js"          ></script>
         <script>
             function activateSubMenu(id) {
                 document.getElementById("submenu_account").classList.remove("active");
                 document.getElementById("submenu_users").classList.remove("active");
-                document.getElementById("submenu_system").classList.remove("active");
                 element = document.getElementById("submenu_"+id);
                 if (element) {element.classList.add("active");}
 			}
             function setIsAdminSubMenu(flag) {
                 if (flag) {
                     $("#submenu_users").show();
-                    $("#submenu_system").show();
                 } else {
                     $("#submenu_users").hide();
-                    $("#submenu_system").hide();
                 }
             }
         </script>
@@ -32,7 +28,6 @@
                 <ul class="nav nav-tabs" style="margin-bottom: 20px;">
                     <li id="submenu_account"            role="presentation"><a href="#/account"         >About you</a></li>
                     <li id="submenu_users"              role="presentation"><a href="#/users"           >Users</a></li>
-                    <li id="submenu_system"             role="presentation"><a href="#/system"          >System</a></li>
                 </ul>
                 <div ng-view></div>
 			</div>
