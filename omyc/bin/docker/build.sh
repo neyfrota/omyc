@@ -1,5 +1,5 @@
 #!/bin/bash
-
+echo ">> Enter bin/docker/build.sh"
 
 #
 # create user.group at id 1000
@@ -14,11 +14,11 @@ apt-get update -y
 # #
 # # install btsync
 # # btsync now is local at project folder, so we update in sync with omyc
-# apt-get install -y software-properties-common
-# add-apt-repository -y ppa:tuxpoldo/btsync
-# apt-get update -y
-# apt-get install -y btsync
-# rm -f /etc/btsync/*.confproftpd-mod-vroot
+apt-get install -y software-properties-common
+add-apt-repository -y ppa:tuxpoldo/btsync
+apt-get update -y
+apt-get install -y btsync
+rm -f /etc/btsync/*.confproftpd-mod-vroot
 
 #
 # install packages
@@ -72,3 +72,5 @@ sed -i -e 's/export APACHE_RUN_GROUP=www-data/export APACHE_RUN_GROUP=omyc/' /et
 # clean the house
 apt-get autoremove -y
 apt-get autoclean -y
+
+echo ">> Leave bin/docker/build.sh"
