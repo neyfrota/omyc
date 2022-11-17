@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# TODO: die if not inside docker instance
+
 #
 # create user.group at id 1000
 groupadd -g 1000 omyc
@@ -10,21 +10,37 @@ useradd -u 1000 -g 1000 --no-create-home -s /bin/bash omyc
 # update repo index
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -y
-apt-get install -y software-properties-common
 
-# btsync now is local at project folder, so we update in sync with omyc
 # #
 # # install btsync
+# # btsync now is local at project folder, so we update in sync with omyc
+# apt-get install -y software-properties-common
 # add-apt-repository -y ppa:tuxpoldo/btsync
 # apt-get update -y
 # apt-get install -y btsync
-# rm -f /etc/btsync/*.conf
+# rm -f /etc/btsync/*.confproftpd-mod-vroot
 
 #
-# install webapp resources
-apt-get install -y libmojolicious-perl libtimedate-perl apache2 php5 php5-cli libapache2-mod-php5 php5-gd php5-json php5-curl apache2-utils libjson-perl liburi-perl dnsutils curl
+# install packages
+apt-get install -y libmojolicious-perl libtimedate-perl libjson-perl liburi-perl
+apt-get install -y apache2-utils apache2 
+apt-get install -y dnsutils curl
+apt-get install -y php php-cli libapache2-mod-php php-gd php-json php-curl
+apt-get install -y proftpd openssh-server proftpd-mod-crypto
+# in case you need human interaction:
+# apt-get install -y net-tools iputils-ping vim curl dnsutils
+
+
+#
+# config proftp
+ln -s /omyc/etc/proftpd/conf.d.conf /etc/proftpd/conf.d/omyc.conf
+sed -i -e 's/User proftpd/User omyc/' /etc/proftpd/proftpd.conf
+sed -i -e 's/Group nogroup/Group omyc/' /etc/proftpd/proftpd.conf
+
+#
+# config apache
 rm -f /etc/apache2/sites-enabled/*
-ln -s /omyc/etc/sites-enabled.conf /etc/apache2/sites-enabled/omyc.conf
+ln -s /omyc/etc/apache2/sites-enabled.conf /etc/apache2/sites-enabled/omyc.conf
 a2dismod status
 a2enmod rewrite
 a2enmod auth_basic
@@ -49,11 +65,9 @@ echo "ServerSignature Off" >> /etc/apache2/conf-enabled/security.conf
 echo "TraceEnable Off" >> /etc/apache2/conf-enabled/security.conf
 sed -i -e 's/export APACHE_RUN_USER=www-data/export APACHE_RUN_USER=omyc/' /etc/apache2/envvars
 sed -i -e 's/export APACHE_RUN_GROUP=www-data/export APACHE_RUN_GROUP=omyc/' /etc/apache2/envvars
-#
-# install proftp
-apt-get install -y proftpd openssh-server
-rm -f /etc/proftpd/proftpd.conf
-ln -s /omyc/etc/proftpd.conf /etc/proftpd/proftpd.conf
+
+
+
 #
 # clean the house
 apt-get autoremove -y

@@ -6,10 +6,6 @@
 #
 echo "==============================================="
 echo "Start OMYC"
-_IP=$(hostname -I) || true
-if [ "$_IP" ]; then
-  printf "IP %s \n" "$_IP"
-fi
 echo "==============================================="
 
 
@@ -24,6 +20,17 @@ mkdir /data/settings/btsync >/dev/null 2>/dev/null
 mkdir /data/settings/cert >/dev/null 2>/dev/null
 touch /data/settings/sync.conf >/dev/null 2>/dev/null
 touch /etc/btsync.conf >/dev/null 2>/dev/null
+
+
+# ================================
+# if no cert, create cert
+# ================================
+if [ ! -e /data/settings/cert/active.crt ]; then
+    cat /etc/ssl/certs/ssl-cert-snakeoil.pem > /data/settings/cert/active.crt
+    cat /etc/ssl/private/ssl-cert-snakeoil.key > /data/settings/cert/active.key
+    echo "-----BEGIN CERTIFICATE-----" > /data/settings/cert/active.ca
+    echo "-----END CERTIFICATE-----" >> /data/settings/cert/active.ca
+fi
 
 
 
@@ -49,17 +56,6 @@ fi
 
 
 
-# ================================
-# if no cert, create cert
-# ================================
-if [ ! -e /data/settings/cert/active.crt ]; then
-    cat /etc/ssl/certs/ssl-cert-snakeoil.pem > /data/settings/cert/active.crt
-    cat /etc/ssl/private/ssl-cert-snakeoil.key > /data/settings/cert/active.key
-    echo "-----BEGIN CERTIFICATE-----" > /data/settings/cert/active.ca
-    echo "-----END CERTIFICATE-----" >> /data/settings/cert/active.ca
-fi
-
-
 
 # ================================
 # fix permission
@@ -80,45 +76,46 @@ chmod a+rw /dev/null
 # ================================
 # setup logs
 # ================================
-rm -f /var/log/api.server.log  >/dev/null 2>/dev/null
-rm -f /var/log/systemCommands.log  >/dev/null 2>/dev/null
-rm -f /var/log/apache2/access.log  >/dev/null 2>/dev/null
-rm -f /var/log/apache2/error.log  >/dev/null 2>/dev/null
-rm -f /var/log/proftpd/controls.log  >/dev/null 2>/dev/null
-rm -f /var/log/proftpd/proftpd.log  >/dev/null 2>/dev/null
-rm -f /var/log/apache2/other_vhosts_access.log >/dev/null 2>/dev/null
-ln -s /dev/null /var/log/apache2/other_vhosts_access.log >/dev/null 2>/dev/null
-if [ "$development" = "true" ]; then
-    echo "Prepare log files for debug"
-	touch /var/log/systemCommands.log  >/dev/null 2>/dev/null
-    touch /var/log/api.server.log >/dev/null 2>/dev/null
-    touch /var/log/apache2/access.log >/dev/null 2>/dev/null
-    touch /var/log/apache2/error.log >/dev/null 2>/dev/null
-    touch /var/log/proftpd/controls.log >/dev/null 2>/dev/null
-    touch /var/log/proftpd/proftpd.log >/dev/null 2>/dev/null
-else
-    # not debug. Lets point all logs to /dev/null so we create less garbage at fs
-	ln -s /dev/null /var/log/systemCommands.log  >/dev/null 2>/dev/null
-    ln -s /dev/null /var/log/api.server.log >/dev/null 2>/dev/null
-    ln -s /dev/null /var/log/apache2/access.log >/dev/null 2>/dev/null
-    ln -s /dev/null /var/log/apache2/error.log >/dev/null 2>/dev/null
-    # proftp complain link to devnull... we need mute logs in different way
-    #ln -s /dev/null /var/log/proftpd/controls.log >/dev/null 2>/dev/null
-    #ln -s /dev/null /var/log/proftpd/proftpd.log >/dev/null 2>/dev/null
-fi
-rm -f /tmp/systemCommands  >/dev/null 2>/dev/null
-touch /tmp/systemCommands  >/dev/null 2>/dev/null
-chown -Rf omyc.omyc /tmp/systemCommands >/dev/null 2>/dev/null
-chown -Rf omyc.omyc /var/log/systemCommands.log >/dev/null 2>/dev/null
-chown -Rf omyc.omyc /var/log/api.server.log >/dev/null 2>/dev/null
-chown -Rf omyc.omyc /var/log/api.server.log >/dev/null 2>/dev/null
-chown -Rf omyc.omyc /var/log/apache2/ >/dev/null 2>/dev/null
-chown -Rf omyc.omyc /var/log/proftpd/ >/dev/null 2>/dev/null
-chmod -Rf a-rwx,a+rX,u+w /tmp/systemCommands >/dev/null 2>/dev/null
-chmod -Rf a-rwx,a+rX,u+w /var/log/systemCommands.log  >/dev/null 2>/dev/null
-chmod -Rf a-rwx,a+rX,u+w /var/log/api.server.log >/dev/null 2>/dev/null
-chmod -Rf a-rwx,a+rX,u+w /var/log/apache2/ >/dev/null 2>/dev/null
-chmod -Rf a-rwx,a+rX,u+w /var/log/proftpd/ >/dev/null 2>/dev/null
+# TODO: add log2ram or any other package that handle this in a systewide way
+# rm -f /var/log/api.server.log  >/dev/null 2>/dev/null
+# rm -f /var/log/systemCommands.log  >/dev/null 2>/dev/null
+# rm -f /var/log/apache2/access.log  >/dev/null 2>/dev/null
+# rm -f /var/log/apache2/error.log  >/dev/null 2>/dev/null
+# rm -f /var/log/proftpd/controls.log  >/dev/null 2>/dev/null
+# rm -f /var/log/proftpd/proftpd.log  >/dev/null 2>/dev/null
+# rm -f /var/log/apache2/other_vhosts_access.log >/dev/null 2>/dev/null
+# ln -s /dev/null /var/log/apache2/other_vhosts_access.log >/dev/null 2>/dev/null
+# if [ "$development" = "true" ]; then
+#     echo "Prepare log files for debug"
+# 	touch /var/log/systemCommands.log  >/dev/null 2>/dev/null
+#     touch /var/log/api.server.log >/dev/null 2>/dev/null
+#     touch /var/log/apache2/access.log >/dev/null 2>/dev/null
+#     touch /var/log/apache2/error.log >/dev/null 2>/dev/null
+#     touch /var/log/proftpd/controls.log >/dev/null 2>/dev/null
+#     touch /var/log/proftpd/proftpd.log >/dev/null 2>/dev/null
+# else
+#     # not debug. Lets point all logs to /dev/null so we create less garbage at fs
+# 	ln -s /dev/null /var/log/systemCommands.log  >/dev/null 2>/dev/null
+#     ln -s /dev/null /var/log/api.server.log >/dev/null 2>/dev/null
+#     ln -s /dev/null /var/log/apache2/access.log >/dev/null 2>/dev/null
+#     ln -s /dev/null /var/log/apache2/error.log >/dev/null 2>/dev/null
+#     # proftp complain link to devnull... we need mute logs in different way
+#     #ln -s /dev/null /var/log/proftpd/controls.log >/dev/null 2>/dev/null
+#     #ln -s /dev/null /var/log/proftpd/proftpd.log >/dev/null 2>/dev/null
+# fi
+# rm -f /tmp/systemCommands  >/dev/null 2>/dev/null
+# touch /tmp/systemCommands  >/dev/null 2>/dev/null
+# chown -Rf omyc.omyc /tmp/systemCommands >/dev/null 2>/dev/null
+# chown -Rf omyc.omyc /var/log/systemCommands.log >/dev/null 2>/dev/null
+# chown -Rf omyc.omyc /var/log/api.server.log >/dev/null 2>/dev/null
+# chown -Rf omyc.omyc /var/log/api.server.log >/dev/null 2>/dev/null
+# chown -Rf omyc.omyc /var/log/apache2/ >/dev/null 2>/dev/null
+# chown -Rf omyc.omyc /var/log/proftpd/ >/dev/null 2>/dev/null
+# chmod -Rf a-rwx,a+rX,u+w /tmp/systemCommands >/dev/null 2>/dev/null
+# chmod -Rf a-rwx,a+rX,u+w /var/log/systemCommands.log  >/dev/null 2>/dev/null
+# chmod -Rf a-rwx,a+rX,u+w /var/log/api.server.log >/dev/null 2>/dev/null
+# chmod -Rf a-rwx,a+rX,u+w /var/log/apache2/ >/dev/null 2>/dev/null
+# chmod -Rf a-rwx,a+rX,u+w /var/log/proftpd/ >/dev/null 2>/dev/null
 
 
 
@@ -126,12 +123,12 @@ chmod -Rf a-rwx,a+rX,u+w /var/log/proftpd/ >/dev/null 2>/dev/null
 # ================================
 # setup cron
 # ================================
-echo "* * * * * /omyc/bin/systemCommands/runQueue >/var/log/systemCommands.log 2>/var/log/systemCommands.log " > /tmp/mycron 2>/dev/null
-echo "30 * * * * /omyc/bin/systemCommands/command.checkSystemServices >/dev/null 2>/dev/null " >> /tmp/mycron 2>/dev/null
-crontab /tmp/mycron >/dev/null 2>/dev/null
-rm /tmp/mycron >/dev/null 2>/dev/null
-killall cron  >/dev/null 2>/dev/null
-rm -f /var/run/crond.pid  >/dev/null 2>/dev/null
+# echo "* * * * * /omyc/bin/systemCommands/runQueue >/var/log/systemCommands.log 2>/var/log/systemCommands.log " > /tmp/mycron 2>/dev/null
+# echo "30 * * * * /omyc/bin/systemCommands/command.checkSystemServices >/dev/null 2>/dev/null " >> /tmp/mycron 2>/dev/null
+# crontab /tmp/mycron >/dev/null 2>/dev/null
+# rm /tmp/mycron >/dev/null 2>/dev/null
+# killall cron  >/dev/null 2>/dev/null
+# rm -f /var/run/crond.pid  >/dev/null 2>/dev/null
 
 
 
@@ -144,7 +141,7 @@ if [ "$development" = "true" ]; then
 	/omyc/bin/systemCommands/command.restartBtsync
 	/etc/init.d/apache2 restart
 	/etc/init.d/proftpd restart
-	/usr/bin/sudo -u omyc /usr/bin/morbo -w /omyc/bin/api.server.pl -w /omyc/lib/ -v -l http://127.0.0.1:8080 /omyc/bin/api.server.pl  >>/var/log/api.server.log 2>>/var/log/api.server.log &
+	/bin/su omyc -c "/usr/bin/morbo -w /omyc/bin/api.server.pl -w /omyc/lib/ -v -l http://127.0.0.1:8080 /omyc/bin/api.server.pl"  >>/var/log/api.server.log 2>>/var/log/api.server.log &
 	cron -f  >/dev/null 2>/dev/null &
 else
     echo "Start services in production mode"
@@ -152,7 +149,7 @@ else
 	/omyc/bin/systemCommands/command.restartBtsync
 	/etc/init.d/apache2 restart
 	/etc/init.d/proftpd restart
-	/usr/bin/sudo -u omyc /usr/bin/morbo -l http://127.0.0.1:8080 /omyc/bin/api.server.pl  >>/dev/null 2>>/dev/null &
+	/bin/su omyc -c "/usr/bin/morbo -l http://127.0.0.1:8080 /omyc/bin/api.server.pl " >>/dev/null 2>>/dev/null &
 	cron -f  >/dev/null 2>/dev/null &
 fi
 
@@ -161,6 +158,11 @@ fi
 # ================================
 # keep instance up
 # ================================
-echo "Show logs forever"
-chmod a+rw /dev/null
-tail -f -n 0 /var/log/apache2/* /var/log/proftpd/* /var/log/api.server.log /var/log/api.server.log /var/log/systemCommands.log  /tmp/systemCommands
+echo "Holding instance up"
+while :; do
+    date
+    sleep 300
+done
+# echo "Show logs forever"
+# chmod a+rw /dev/null
+# tail -f -n 0 /var/log/apache2/* /var/log/proftpd/* /var/log/api.server.log /var/log/api.server.log /var/log/systemCommands.log  /tmp/systemCommands
