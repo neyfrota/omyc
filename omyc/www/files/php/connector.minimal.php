@@ -167,11 +167,11 @@ if (empty($homedir)) {
 		'roots' => array(
 			array(
 				'driver'        => 'LocalFileSystem',           // driver for accessing file system (REQUIRED)
-				#'alias'      	=> $user.' files',
 				'alias'      	=> 'Your files',
+				'path'          => $homedir,
 				'imgLib'		=> 'auto',
-				'tmbPath'		=> '.tmb',
-				'path'          => $homedir,  			      // path to files (REQUIRED)
+				'tmbPath'		=> "/data/cache/thumb/",
+				'tmbURL'		=> "/files/thumb/",
 				'mimeDetect'	=> 'mime_content_type',
 				'uploadDeny'    => array('all'),                // All Mimetypes not allowed to upload
 				'uploadAllow'   => array('all'),				// Mimetype `image` and `text/plain` allowed to upload

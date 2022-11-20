@@ -10,9 +10,11 @@ echo "==============================================="
 
 
 
+
 # ================================
-# check folders
+# fix folders
 # ================================
+
 mkdir /data/ >/dev/null 2>/dev/null
 mkdir /data/users/ >/dev/null 2>/dev/null
 mkdir /data/settings/ >/dev/null 2>/dev/null
@@ -20,7 +22,30 @@ mkdir /data/settings/btsync >/dev/null 2>/dev/null
 mkdir /data/settings/cert >/dev/null 2>/dev/null
 touch /data/settings/sync.conf >/dev/null 2>/dev/null
 touch /etc/btsync.conf >/dev/null 2>/dev/null
+mkdir /data/cache/ >/dev/null 2>/dev/null
+mkdir /data/cache/thumb/ >/dev/null 2>/dev/null
 
+chown -f omyc.omyc /data/ >/dev/null 2>/dev/null
+chown -f omyc.omyc /data/users/ >/dev/null 2>/dev/null
+chown -Rf omyc.omyc /data/settings/ >/dev/null 2>/dev/null
+chown -Rf omyc.omyc /data/settings/btsync >/dev/null 2>/dev/null
+chown -Rf omyc.omyc /data/settings/cert >/dev/null 2>/dev/null
+chown -f omyc.omyc /data/settings/sync.conf >/dev/null 2>/dev/null
+chown -f omyc.omyc /etc/btsync.conf >/dev/null 2>/dev/null
+chown -f omyc.omyc /data/cache/ >/dev/null 2>/dev/null
+chown -f omyc.omyc /data/cache/thumb/ >/dev/null 2>/dev/null
+
+chmod -f a-rwx,a+rX,u+w /data/ >/dev/null 2>/dev/null
+chmod -f a-rwx,a+rX,u+w /data/users/ >/dev/null 2>/dev/null
+chmod -Rf a-rwx,u+rwX /data/settings/ >/dev/null 2>/dev/null
+chmod -Rf a-rwx,u+rwX /data/settings/btsync >/dev/null 2>/dev/null
+chmod -Rf a-rwx,u+rwX /data/settings/cert >/dev/null 2>/dev/null
+chmod -f a-rwx,u+rw /data/settings/sync.conf >/dev/null 2>/dev/null
+chmod -f a-rwx,u+rw /etc/btsync.conf >/dev/null 2>/dev/null
+chmod -f a-rwx,a+rX,u+w /data/cache/ >/dev/null 2>/dev/null
+chmod -f a-rwx,a+rX,u+w /data/cache/thumb/ >/dev/null 2>/dev/null
+
+chmod a+rw /dev/null
 
 
 
@@ -32,23 +57,9 @@ if [ ! -e /data/settings/cert/active.crt ]; then
     cat /etc/ssl/private/ssl-cert-snakeoil.key > /data/settings/cert/active.key
     echo "-----BEGIN CERTIFICATE-----" > /data/settings/cert/active.ca
     echo "-----END CERTIFICATE-----" >> /data/settings/cert/active.ca
+    chown -Rf omyc.omyc /data/settings/cert >/dev/null 2>/dev/null
+    chmod -Rf a-rwx,u+rwX /data/settings/cert >/dev/null 2>/dev/null
 fi
-
-
-
-# ================================
-# fix permission
-# ================================
-chown -f omyc.omyc /data/ >/dev/null 2>/dev/null
-chown -f omyc.omyc /data/users/ >/dev/null 2>/dev/null
-chown -Rf omyc.omyc /data/settings/ >/dev/null 2>/dev/null
-chown -f omyc.omyc /etc/btsync.conf >/dev/null 2>/dev/null
-chmod -f a-rwx,a+rX,u+w /data/ >/dev/null 2>/dev/null
-chmod -f a-rwx,a+rX,u+w /data/users/ >/dev/null 2>/dev/null
-chmod -Rf a-rwx,u+rwX /data/settings/ >/dev/null 2>/dev/null
-chmod -f a-rwx,u+rw /etc/btsync.conf >/dev/null 2>/dev/null
-chmod a+rw /dev/null
-
 
 
 
@@ -70,6 +81,10 @@ if [ ! -e /data/settings/users.sftp ]; then
 	echo "admin"| /usr/sbin/ftpasswd --file /data/settings/users.sftp --passwd --name admin --home /data/users/admin/ --shell /bin/false --uid 1000 --gid 1000 --stdin  >/dev/null 2>/dev/null
 	htpasswd -b /data/settings/users.web admin admin >/dev/null 2>/dev/null
     echo "admin:admin" > /data/settings/groups.web
+    #
+    chown -Rf omyc.omyc /data/settings/ >/dev/null 2>/dev/null
+    chmod -f a-rwx,u+rwX /data/settings/ >/dev/null 2>/dev/null
+    #
 fi
 
 
