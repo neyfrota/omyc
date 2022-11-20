@@ -70,8 +70,8 @@
                 <div class="alert alert-danger" ng-hide="!api.response.error"><b>Fail!</b> {{api.response.error.message}}</div>
 
                 <div class="btn-group">
-                    <button type="button" class="btn btn-default" ng-click="clickCancel()">Back</button>
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Stop sync this folder</button>
+                    <button type="button" ng-click="clickCancel()"  class="btn btn-default" >Back</button>
+                    <button type="button" ng-click="api.delete()"   class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >Stop sync this folder</button>
                     <ul class="dropdown-menu">
                         <li><a >No</a></li>
                         <li><a ng-click="api.delete()" >Yes, stop sync</a></li>

@@ -36,7 +36,8 @@ app.controller('add', function($scope,$routeParams,$location,$http,$interval) {
                 $scope.api.response = response;
                 $scope.api.busy 	= false;
                 $scope.item         = response.share
-                $location.path('/view/'+$scope.item._id);
+                $location.path('/list/'); 
+                //$location.path('/view/'+$scope.item._id);
             } else {
                 $scope.api.response = response;
                 $scope.api.busy 	= false;

@@ -90,22 +90,16 @@ app.controller('controller', function($scope,$timeout, $http,$window,$location) 
         <div class="jumbotron" style="margin: 0px;padding: 0px;background-color: #fff">
             <div class="row" style="margin: 25px 0px;">
                 <div class="col-md-4" style="text-align: center; padding: 25px 50px;">
-                    <a href="../files"   style="color:black; text-decoration: none;"  >
-                        <h1><span class="glyphicon glyphicon-folder-open" aria-hidden="true" ></span></h1>
-                        <h3>Access your files over web at any time.</h3>
-                    </a>
+                    <h1><span class="glyphicon glyphicon-folder-open" aria-hidden="true" ></span></h1>
+                    <h3>Access your files over web at any time.</h3>
                 </div>
                 <div class="col-md-4"  style="text-align: center; padding: 25px 50px;">
-                    <a href="../sync"   style="color:black; text-decoration: none;"  >
                         <h1><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></h1>
                         <h3>Sync folders across multiple devices</h3>
-                    </a>
                 </div>
                 <div class="col-md-4"  style="text-align: center; padding: 25px 50px;">
-                    <a href="../mount"   style="color:black; text-decoration: none;"  >
                         <h1><span class="glyphicon glyphicon-hdd" aria-hidden="true" ></h1>
                         <h3>Mount your files local in your computer</h3>
-                    </a>
                 </div>
             </div>
         </div>
