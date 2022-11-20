@@ -144,6 +144,7 @@ function access($attr, $path, $data, $volume, $isDir, $relpath) {
 
 // define user/homedir from basic auth and folder structure
 $homedir = "";
+$backupdir = "";
 $user = $_SERVER['PHP_AUTH_USER'];
 $user = preg_replace("/[^a-zA-Z0-9]+/", "", $user);
 if (empty($user)) {
@@ -162,18 +163,18 @@ if (empty($homedir)) {
 	$opts = array();
 } else {
 	$opts = array(
-		// 'debug' => true,
+		'debug' => true,
 		'roots' => array(
 			array(
 				'driver'        => 'LocalFileSystem',           // driver for accessing file system (REQUIRED)
 				#'alias'      	=> $user.' files',
 				'alias'      	=> 'Your files',
-				'imgLib'		=> 'gd',
+				'imgLib'		=> 'auto',
 				'tmbPath'		=> '.tmb',
 				'path'          => $homedir,  			      // path to files (REQUIRED)
 				'mimeDetect'	=> 'mime_content_type',
 				'uploadDeny'    => array('all'),                // All Mimetypes not allowed to upload
-				'uploadAllow'   => array('all'),// Mimetype `image` and `text/plain` allowed to upload
+				'uploadAllow'   => array('all'),				// Mimetype `image` and `text/plain` allowed to upload
 				'uploadOrder'   => array('deny', 'allow'),      // allowed Mimetype `image` and `text/plain` only
 				'accessControl' => 'access'                     // disable and hide dot starting files (OPTIONAL)
 			)

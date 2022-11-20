@@ -1,0 +1,13 @@
+
+<!--#include virtual="../resources/includes/page.top.html" -->
+
+<script>activateMenu("mount")</script>
+
+<div class="container" style="padding-top: 70px">
+    <div ng-app="app">
+        <h1><span class="glyphicon glyphicon-hdd"      aria-hidden="true" style="margin-bottom: 30px;"></span> Mount your files</h1>
+    </div>
+</div>
+
+
+<!--#include virtual="../resources/includes/page.bot.html" -->

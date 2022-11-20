@@ -7,17 +7,30 @@
 		<link  href="/resources/index.css"                                              rel="stylesheet">
 		<link  href="/resources/angular-tree-control/css/tree-control.css"				rel="stylesheet">
 		<link  href="/resources/angular-tree-control/css/tree-control-attribute.css"	rel="stylesheet">
-		<script src="/resources/jquery/jquery.min.js"				            ></script>
+		<script src="/resources/jquery-3.6.0/jquery.min.js"				        ></script>
 		<script src="/resources/angular/angular.min.js"				            ></script>
 		<script src="/resources/angular/angular-route.min.js"		            ></script>
 		<script src="/resources/angular/angular-animate.min.js"                 ></script>
 		<script src="/resources/angular-tree-control/angular-tree-control.js"   ></script>
 	    <script src="/resources/bootstrap/js/bootstrap.min.js"		            ></script>
         <script>
+            function publicMenu() {
+                document.getElementById("menu_files").style.display="none";
+                document.getElementById("menu_sync").style.display="none";
+                document.getElementById("menu_mount").style.display="none";
+                document.getElementById("menu_settings").style.display="none";
+			}
+            function privateMenu() {
+                document.getElementById("menu_files").style.display="block";
+                document.getElementById("menu_sync").style.display="block";
+                document.getElementById("menu_mount").style.display="block";
+                document.getElementById("menu_settings").style.display="block";
+			}
             function activateMenu(id) {
                 document.getElementById("menu_welcome").classList.remove("active");
                 document.getElementById("menu_files").classList.remove("active");
                 document.getElementById("menu_sync").classList.remove("active");
+                document.getElementById("menu_mount").classList.remove("active");
                 document.getElementById("menu_settings").classList.remove("active");
                 var element = document.getElementById("menu_"+id);
                 if (element) {element.classList.add("active");}
@@ -40,6 +53,7 @@
 						<li id=menu_welcome ><a href="../welcome"   ><span class="glyphicon glyphicon-home"         aria-hidden="true"></span> Home</a></li>
 						<li id=menu_files   ><a href="../files"     ><span class="glyphicon glyphicon-folder-open"  aria-hidden="true"></span> Your files</a></li>
 						<li id=menu_sync    ><a href="../sync"      ><span class="glyphicon glyphicon-refresh"      aria-hidden="true"></span> Sync folders</a></li>
+						<li id=menu_mount   ><a href="../mount"     ><span class="glyphicon glyphicon glyphicon-hdd"aria-hidden="true"></span> Mount your files</a></li>
 						<li id=menu_settings><a href="../settings"  ><span class="glyphicon glyphicon-cog"          aria-hidden="true"></span> Settings</a></li>
 					</ul>
 				</div><!--/.nav-collapse -->

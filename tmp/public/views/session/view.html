@@ -1,0 +1,25 @@
+
+
+
+        <div class="jumbotron" ng-show="(!session.busy && !session.active)">
+            <h1><b>Please sign-in</b></h1>
+            <p>
+                <button class="btn btn-lg btn-primary xbtn-block" ng-click="session.create()">Sign in</button>
+            </p>
+        </div>
+
+
+        <div class="jumbotron" ng-show="(!session.busy && session.active)">
+            <h1><b>Welcome home</b></h1>
+            <p>
+                Use top menu to navigate or <button class="btn XXbtn-lg btn-primary " ng-click="session.destroy()">Sign out</button>
+            </p>
+        </div>
+
+        <div class="jumbotron" ng-show="session.busy ">
+            <h1><b>Please wait</b></h1>
+            <p>
+                <span class="glyphicon glyphicon-refresh" aria-hidden="true" ></span> Loading...
+            </p>
+        </div>
+

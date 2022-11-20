@@ -1,35 +1,116 @@
 
 <!--#include virtual="../resources/includes/page.top.html" -->
 
-<script>activateMenu("welcome")</script>
-
-<div class="container" style="padding-top: 70px">
-
-    <div class="jumbotron">
-        <h1><b>Welcome</b></h1>
-        <p>
-            Use top menu to navigate.
-        </p>
-    </div>
+<script>
+publicMenu();
+activateMenu("welcome")
+var app = angular.module('myApp', []);
+app.controller('controller', function($scope,$timeout, $http,$window,$location) {
 
 
-    <div class="jumbotron" style="margin: 0px;padding: 0px;background-color: #fff">
-        <div class="row" style="margin: 25px 0px;">
-            <div class="col-md-4" style="text-align: center; padding: 25px 50px;">
-                <h1><span class="glyphicon glyphicon-folder-open" aria-hidden="true" ></span></h1>
-                <h3>Access your files over web at any time.</h3>
-            </div>
-            <div class="col-md-4"  style="text-align: center; padding: 25px 50px;">
-                <h1><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></h1>
-                <h3>Sync folders across multiple devices</h3>
-            </div>
-            <div class="col-md-4"  style="text-align: center; padding: 25px 50px;">
-                <h1><span class="glyphicon glyphicon-hdd" aria-hidden="true" ></h1>
-                <h3>Mount your files local in your computer</h3>
+    $scope.session			    = {};
+    $scope.session.active	    = false;
+    $scope.session.busy	    	= false;
+    $scope.session.updateMenu   = function() {
+        if ($scope.session.active) { privateMenu() } else { publicMenu() }
+    }
+    $scope.session.check        = function(callbackTrue,callbackFalse) {
+        if (!callbackTrue) { callbackTrue=function(){} }
+        if (!callbackFalse) { callbackFalse=function(){} }
+        if ($scope.session.busy) {return}
+        $scope.session.busy     = true;
+        $scope.session.active	= false;
+        $scope.session.updateMenu();
+        $http.get("/session/status/")
+        .success(function(response) {
+            $scope.session.busy 	= false;
+            if (response) {
+                if (response.ok==1) {
+                    $scope.session.active = true;
+                }
+            }
+            $scope.session.updateMenu();
+            if ($scope.session.active) { callbackTrue() } else { callbackFalse() }
+        })
+        .error(function(response) {
+            $scope.session.busy 	= false;
+            $scope.session.updateMenu();
+            if ($scope.session.active) { callbackTrue() } else { callbackFalse() }
+        });
+    }
+    $scope.session.destroy      = function() {
+        // New XMLHTTPRequest
+        var request = new XMLHttpRequest();
+        request.open("POST", "/session/destroy/", false);
+        request.setRequestHeader("Authorization", "Basic "+btoa("fake:user" ));  
+        request.send();
+        $scope.session.check();
+    }
+    $scope.session.create       = function() {
+        // New XMLHTTPRequest
+        var request = new XMLHttpRequest();
+        request.open("POST", "/session/create", false);
+        request.send();
+        $scope.session.check();
+    }
+
+    $scope.session.check();
+
+});
+
+
+</script>
+<div ng-app="myApp">
+
+    <div class="container" style="padding-top: 70px"  ng-controller="controller">
+
+        <div class="jumbotron" ng-show="(!session.busy && !session.active)">
+            <h1><b>Please sign-in</b></h1>
+            <p>
+                <button class="btn btn-lg btn-primary xbtn-block" ng-click="session.create()">Sign in</button>
+            </p>
+        </div>
+
+
+        <div class="jumbotron" ng-show="(!session.busy && session.active)">
+            <h1><b>Welcome home</b></h1>
+            <p>
+                Use top menu to navigate or <button class="btn XXbtn-lg btn-primary " ng-click="session.destroy()">Sign out</button>
+            </p>
+        </div>
+
+        <div class="jumbotron" ng-show="session.busy ">
+            <h1><b>Please wait</b></h1>
+            <p>
+                <span class="glyphicon glyphicon-refresh" aria-hidden="true" ></span> Loading...
+            </p>
+        </div>
+
+
+        <div class="jumbotron" style="margin: 0px;padding: 0px;background-color: #fff">
+            <div class="row" style="margin: 25px 0px;">
+                <div class="col-md-4" style="text-align: center; padding: 25px 50px;">
+                    <a href="../files"   style="color:black; text-decoration: none;"  >
+                        <h1><span class="glyphicon glyphicon-folder-open" aria-hidden="true" ></span></h1>
+                        <h3>Access your files over web at any time.</h3>
+                    </a>
+                </div>
+                <div class="col-md-4"  style="text-align: center; padding: 25px 50px;">
+                    <a href="../sync"   style="color:black; text-decoration: none;"  >
+                        <h1><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></h1>
+                        <h3>Sync folders across multiple devices</h3>
+                    </a>
+                </div>
+                <div class="col-md-4"  style="text-align: center; padding: 25px 50px;">
+                    <a href="../mount"   style="color:black; text-decoration: none;"  >
+                        <h1><span class="glyphicon glyphicon-hdd" aria-hidden="true" ></h1>
+                        <h3>Mount your files local in your computer</h3>
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
 
+    </div>
 </div>
 
 <!--#include virtual="../resources/includes/page.bot.html" -->
