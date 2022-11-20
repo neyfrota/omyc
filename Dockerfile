@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM ubuntu:16.04
 # i want this : ) FROM debian:11-slim
 LABEL description="Old man yells at cloud"
 COPY omyc /omyc/

@@ -17,7 +17,7 @@
         {
             "name":     "Naoki Sawada",
             "homepage": "http://xoops.hypweb.net",
-            "email":    "hypweb@gmail.com"
+            "email":    "hypweb+elfinder@gmail.com"
         },
         {
             "name":     "Community contributions",
@@ -28,11 +28,10 @@
         "php": ">=5.2"
     },
     "suggest": {
-        "dropbox-php/dropbox-php": "elFinder Volume driver `Dropbox` require `dropbox-php/dropbox-php`.",
-        "pear/auth": "dropbox-php require `pear/auth` or `PHP OAuth extension`.",
-        "pear/http_request2": "dropbox-php require `pear/http_request2` or `PHP OAuth extension`.",
-        "pear/net_url2": "dropbox-php require `pear/net_url2` or `PHP OAuth extension`.",
-        "barryvdh/elfinder-flysystem-driver": "VolumeDriver for elFinder to use Flysystem as a root."
+        "kunalvarma05/dropbox-php-sdk": "VolumeDriver `Dropbox`2 require `kunalvarma05/dropbox-php-sdk.",
+        "google/apiclient": "VolumeDriver GoogleDrive require `google/apiclient:^2.0.",
+        "barryvdh/elfinder-flysystem-driver": "VolumeDriver for elFinder to use Flysystem as a root.",
+        "nao-pon/flysystem-google-drive": "require in GoogleDrive network volume mounting with Flysystem."
     },
     "autoload": {
         "classmap": ["php"]

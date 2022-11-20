@@ -1,44 +1,37 @@
 #!/bin/bash
-echo ">> Enter bin/docker/build.sh"
+echo "enter bin/docker/build.sh"
+# TODO: die if not inside docker instance
 
-#
-# create user.group at id 1000
+
+echo "Create system user"
 groupadd -g 1000 omyc
 useradd -u 1000 -g 1000 --no-create-home -s /bin/bash omyc
 
 #
 # update repo index
+echo "Update/upgrade system"
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -y
-
-# #
-# # install btsync
-# # btsync now is local at project folder, so we update in sync with omyc
-apt-get install -y software-properties-common
-add-apt-repository -y ppa:tuxpoldo/btsync
-apt-get update -y
-apt-get install -y btsync
-rm -f /etc/btsync/*.confproftpd-mod-vroot
-
-#
-# install packages
-apt-get install -y libmojolicious-perl libtimedate-perl libjson-perl liburi-perl
-apt-get install -y apache2-utils apache2 
+apt-get install -y software-properties-common sudo 
+apt-get install -y libmojolicious-perl libtimedate-perl libjson-perl liburi-perl 
 apt-get install -y dnsutils curl
-apt-get install -y php php-cli libapache2-mod-php php-gd php-json php-curl
-apt-get install -y proftpd openssh-server proftpd-mod-crypto
-# in case you need human interaction:
-# apt-get install -y net-tools iputils-ping vim curl dnsutils
+apt-get install -y apache2 apache2-utils 
+#apt-get install -y php5 php5-cli libapache2-mod-php5 php5-gd php5-json php5-curl 
+apt-get install -y php php-cli libapache2-mod-php php-gd php-json php-curl 
+apt-get install -y proftpd openssh-server
+
+
+
+# btsync now is local at project folder, so we update in sync with omyc
+echo "Install resilio sync"
+# add-apt-repository -y ppa:tuxpoldo/btsync
+# apt-get update -y
+# apt-get install -y btsync
+# rm -f /etc/btsync/*.conf
 
 
 #
-# config proftp
-ln -s /omyc/etc/proftpd/conf.d.conf /etc/proftpd/conf.d/omyc.conf
-sed -i -e 's/User proftpd/User omyc/' /etc/proftpd/proftpd.conf
-sed -i -e 's/Group nogroup/Group omyc/' /etc/proftpd/proftpd.conf
-
-#
-# config apache
+echo "Configure apache"
 rm -f /etc/apache2/sites-enabled/*
 ln -s /omyc/etc/apache2/sites-enabled.conf /etc/apache2/sites-enabled/omyc.conf
 a2dismod status
@@ -66,11 +59,10 @@ echo "TraceEnable Off" >> /etc/apache2/conf-enabled/security.conf
 sed -i -e 's/export APACHE_RUN_USER=www-data/export APACHE_RUN_USER=omyc/' /etc/apache2/envvars
 sed -i -e 's/export APACHE_RUN_GROUP=www-data/export APACHE_RUN_GROUP=omyc/' /etc/apache2/envvars
 
+echo "Configure proftpd"
+rm -f /etc/proftpd/proftpd.conf
+ln -s /omyc/etc/proftpd/proftpd.conf /etc/proftpd/proftpd.conf
 
-
-#
-# clean the house
+echo "Clean system"
 apt-get autoremove -y
 apt-get autoclean -y
-
-echo ">> Leave bin/docker/build.sh"

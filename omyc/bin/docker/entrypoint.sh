@@ -4,7 +4,9 @@
 # start
 # ================================
 #
-echo ">> Enter bin/docker/entrypoint.sh"
+echo "==============================================="
+echo "Start OMYC"
+echo "==============================================="
 
 
 
@@ -20,6 +22,8 @@ touch /data/settings/sync.conf >/dev/null 2>/dev/null
 touch /etc/btsync.conf >/dev/null 2>/dev/null
 
 
+
+
 # ================================
 # if no cert, create cert
 # ================================
@@ -29,29 +33,6 @@ if [ ! -e /data/settings/cert/active.crt ]; then
     echo "-----BEGIN CERTIFICATE-----" > /data/settings/cert/active.ca
     echo "-----END CERTIFICATE-----" >> /data/settings/cert/active.ca
 fi
-
-
-
-# ================================
-# if no users, create admin
-# ================================
-if [ ! -e /data/settings/users.sftp ]; then
-	echo "No users. Create user admin/admin"
-    #
-	mkdir /data/users/admin >/dev/null 2>/dev/null
-    chown -Rf omyc.omyc /data/users/admin/ >/dev/null 2>/dev/null
-    chmod -Rf a-rwx,u+rwX /data/users/admin/ >/dev/null 2>/dev/null
-    #
-	touch /data/settings/users.web >/dev/null 2>/dev/null
-	touch /data/settings/users.sftp >/dev/null 2>/dev/null
-	touch /data/settings/groups.web >/dev/null 2>/dev/null
-	touch /data/settings/groups.sftp >/dev/null 2>/dev/null
-    #
-	echo "admin"| /usr/sbin/ftpasswd --file /data/settings/users.sftp --passwd --name admin --home /data/users/admin/ --shell /bin/false --uid 1000 --gid 1000 --stdin  >/dev/null 2>/dev/null
-	htpasswd -b /data/settings/users.web admin admin >/dev/null 2>/dev/null
-    echo "admin:admin" > /data/settings/groups.web
-fi
-
 
 
 
@@ -72,9 +53,30 @@ chmod a+rw /dev/null
 
 
 # ================================
+# if no users, create admin
+# ================================
+if [ ! -e /data/settings/users.sftp ]; then
+	echo "No users. Create user admin/admin"
+    #
+	mkdir /data/users/admin >/dev/null 2>/dev/null
+    chown -f omyc.omyc /data/users/admin/ >/dev/null 2>/dev/null
+    chmod -f a-rwx,u+rwX /data/users/admin/ >/dev/null 2>/dev/null
+    #
+	touch /data/settings/users.web >/dev/null 2>/dev/null
+	touch /data/settings/users.sftp >/dev/null 2>/dev/null
+	touch /data/settings/groups.web >/dev/null 2>/dev/null
+	touch /data/settings/groups.sftp >/dev/null 2>/dev/null
+    #
+	echo "admin"| /usr/sbin/ftpasswd --file /data/settings/users.sftp --passwd --name admin --home /data/users/admin/ --shell /bin/false --uid 1000 --gid 1000 --stdin  >/dev/null 2>/dev/null
+	htpasswd -b /data/settings/users.web admin admin >/dev/null 2>/dev/null
+    echo "admin:admin" > /data/settings/groups.web
+fi
+
+
+
+# ================================
 # setup logs
 # ================================
-# TODO: add log2ram or any other package that handle this in a systewide way
 rm -f /var/log/api.server.log  >/dev/null 2>/dev/null
 rm -f /var/log/systemCommands.log  >/dev/null 2>/dev/null
 rm -f /var/log/apache2/access.log  >/dev/null 2>/dev/null
@@ -85,7 +87,7 @@ rm -f /var/log/apache2/other_vhosts_access.log >/dev/null 2>/dev/null
 ln -s /dev/null /var/log/apache2/other_vhosts_access.log >/dev/null 2>/dev/null
 if [ "$development" = "true" ]; then
     echo "Prepare log files for debug"
- 	touch /var/log/systemCommands.log  >/dev/null 2>/dev/null
+	touch /var/log/systemCommands.log  >/dev/null 2>/dev/null
     touch /var/log/api.server.log >/dev/null 2>/dev/null
     touch /var/log/apache2/access.log >/dev/null 2>/dev/null
     touch /var/log/apache2/error.log >/dev/null 2>/dev/null
@@ -139,7 +141,7 @@ if [ "$development" = "true" ]; then
 	/omyc/bin/systemCommands/command.restartBtsync
 	/etc/init.d/apache2 restart
 	/etc/init.d/proftpd restart
-	/bin/su omyc -c "/usr/bin/morbo -w /omyc/bin/api.server.pl -w /omyc/lib/ -v -l http://127.0.0.1:8080 /omyc/bin/api.server.pl"  >>/var/log/api.server.log 2>>/var/log/api.server.log &
+	/usr/bin/sudo -u omyc /usr/bin/morbo -w /omyc/bin/api.server.pl -w /omyc/lib/ -v -l http://127.0.0.1:8080 /omyc/bin/api.server.pl  >>/var/log/api.server.log 2>>/var/log/api.server.log &
 	cron -f  >/dev/null 2>/dev/null &
 else
     echo "Start services in production mode"
@@ -147,7 +149,7 @@ else
 	/omyc/bin/systemCommands/command.restartBtsync
 	/etc/init.d/apache2 restart
 	/etc/init.d/proftpd restart
-	/bin/su omyc -c "/usr/bin/morbo -l http://127.0.0.1:8080 /omyc/bin/api.server.pl " >>/dev/null 2>>/dev/null &
+	/usr/bin/sudo -u omyc /usr/bin/morbo -l http://127.0.0.1:8080 /omyc/bin/api.server.pl  >>/dev/null 2>>/dev/null &
 	cron -f  >/dev/null 2>/dev/null &
 fi
 
@@ -156,12 +158,6 @@ fi
 # ================================
 # keep instance up
 # ================================
-echo ">> Show logs forever"
+echo "Show logs forever"
 chmod a+rw /dev/null
 tail -f -n 0 /var/log/apache2/* /var/log/proftpd/* /var/log/api.server.log /var/log/api.server.log /var/log/systemCommands.log  /tmp/systemCommands
-echo ">> Holding instance up"
-while :; do
-    date
-    sleep 300
-done
-

@@ -5,17 +5,24 @@
 		<title>frota.net</title>
 
 		<!-- jQuery and jQuery UI (REQUIRED) -->
-		<link  href="/resources/jquery-ui/jquery-ui.min.css"				rel="stylesheet" type="text/css" >
-		<link  href="/resources/jquery-ui/jquery-ui.structure.min.css"		rel="stylesheet" type="text/css" >
-		<link  href="/resources/jquery-ui/jquery-ui.theme.min.css"			rel="stylesheet" type="text/css" >
-		<link  href="css/elfinder.min.css"									rel="stylesheet" type="text/css" >
-		<link  href="css/theme.css"											rel="stylesheet" type="text/css" >
-		<script src="/resources/jquery/jquery.min.js"						></script>
-		<script src="/resources/jquery-ui/jquery-ui.min.js"					></script>
-		<script src="js/elfinder.min.js"									></script>
-		<script src="js/i18n/elfinder.pt_BR.js"								></script>
+		<link  href="/resources/jquery-ui-1.13.2/jquery-ui.min.css"				rel="stylesheet" type="text/css" >
+		<link  href="/resources/jquery-ui-1.13.2/jquery-ui.structure.min.css"	rel="stylesheet" type="text/css" >
+		<link  href="/resources/jquery-ui-1.13.2/jquery-ui.theme.min.css"		rel="stylesheet" type="text/css" >
+		<link  href="css/elfinder.min.css"										rel="stylesheet" type="text/css" >
+		<link  href="themes/windows-10/css/theme.css"							rel="stylesheet" type="text/css" >
+		<link  href="css/theme.css"												rel="stylesheet" type="text/css" >
+		<script src="/resources/jquery-3.6.0/jquery.min.js"						></script>
+		<script src="/resources/jquery-ui-1.13.2/jquery-ui.min.js"				></script>
+		<script src="js/elfinder.min.js"										></script>
+		<script src="js/i18n/elfinder.pt_BR.js"									></script>
 		<style>
-			 .ui-resizable-handle { display:none !important; } 
+			.ui-resizable-handle { display:none !important; } 
+			.elfinder .ui-widget {
+				background-color: lightslategray;
+			}
+			.elfinder .elfinder-navbar {
+				background: #dde4eb;
+			}
 		</style>
 
 
@@ -27,17 +34,22 @@
 			$(document).ready(function() {
 				var $window = $(window);
 				var $elfinder = $('#elfinder').elfinder({
-					url : 'php/connector.obey.login.php',
-					lang: 'pt_BR',
+					url : 'php/connector.minimal.php',
+					lang: 'en_US',
 					commands : [
 						'open', 'reload', 'home', 'up', 'back', 'forward', 'getfile', 'quicklook', 
 						'download', 'rm', 'duplicate', 'rename', 'mkdir', 'mkfile', 'upload', 'copy', 
 						'cut', 'paste', 'edit', 'search', 'info', 'view', 'help',
 						'resize', 'sort'
 					],
+					ui:['tree'],
 					uiOptions : {
 						// toolbar configuration
-						toolbar : []
+						toolbar : [],
+						tree : {
+							openRootOnLoad : true,
+							syncTree : true
+						},
 						// toolbar : [
 						// 	['home','up','reload'],
 						// 	['mkdir', 'upload'],
@@ -46,6 +58,7 @@
 						// ]
 					},
 					resizable:true,
+					loadTmbs:10,
 					height:  $window.height()-3,
 					handlers : {
 						dblclick : function(event, elfinderInstance) {

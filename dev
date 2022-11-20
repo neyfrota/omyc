@@ -168,7 +168,8 @@ if [ $1 == "start" ]; then
 	set_active_instance_id
 	if [ -z $active_id ]; then
 		echo "No running instance, Lets start"
-		docker run -d -e "development=true" -p 22:22 -p 80:80 -p 443:443 -p 55555:55555 -v /tmp/omyc/:/data -v $ABSPATH/omyc:/omyc omyc-dev 
+		#docker run -d -e "development=true" -p 22:22 -p 80:80 -p 443:443 -p 55555:55555 -v /tmp/omyc/:/data -v $ABSPATH/omyc:/omyc omyc-dev 
+		docker run -d -e "development=true" -p 22:22 -p 80:80 -p 443:443 -p 55555:55555 -v /home/neyfrota/Documents/:/data/users/admin -v $ABSPATH/omyc:/omyc omyc-dev 
 		set_active_instance_id
 		if [ -z $active_id ]; then
 			echo "Fail start. No running instance"
