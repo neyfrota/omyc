@@ -21,7 +21,7 @@ app.controller('controller', function($scope,$timeout, $http,$window,$location) 
         $scope.session.busy     = true;
         $scope.session.active	= false;
         $scope.session.updateMenu();
-        $http.get("/session/status/")
+        $http.get("/session/status/?t="+Date.now())
         .success(function(response) {
             $scope.session.busy 	= false;
             if (response) {
@@ -41,7 +41,7 @@ app.controller('controller', function($scope,$timeout, $http,$window,$location) 
     $scope.session.destroy      = function() {
         // New XMLHTTPRequest
         var request = new XMLHttpRequest();
-        request.open("POST", "/session/destroy/", false);
+        request.open("POST", "/session/destroy/?t="+Date.now(), false);
         request.setRequestHeader("Authorization", "Basic "+btoa("fake:user" ));  
         request.send();
         $scope.session.check();
@@ -49,7 +49,7 @@ app.controller('controller', function($scope,$timeout, $http,$window,$location) 
     $scope.session.create       = function() {
         // New XMLHTTPRequest
         var request = new XMLHttpRequest();
-        request.open("POST", "/session/create", false);
+        request.open("POST", "/session/create?t="+Date.now(), false);
         request.send();
         $scope.session.check();
     }
