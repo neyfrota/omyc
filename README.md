@@ -1,12 +1,12 @@
 # Old Man Yells at Cloud
 
-Minimalistic easy to use remote file manager in a single docker container.
+Minimalistic easy to use remote file manager in a docker container.
 
 ![Alt text](docs/omyc.gif)
 
 Because you know, there is no cloud, just other people computer :) 
 
-The goal is selfhost a file manager for a small group (5 to 10 users). In my case, I am running a family backup service with a synology NAS in background and OMYC at front. Cloud setup (with large store) can get expensive.
+The goal is selfhost a file manager for a small group (5 to 10 users). In my case, I am running a family backup service with a synology NAS in background and OMYC at front. Cloud setup (with large storage) can get expensive.
 
 Features:
 
