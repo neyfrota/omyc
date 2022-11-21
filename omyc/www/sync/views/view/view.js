@@ -57,7 +57,6 @@ app.controller('view', function($scope,$routeParams,$location,$http,$interval) {
             $scope.api.response = { error:{ code:"ID_EMPTY", message:"Id is empty"} };
             return
         }
-        if (!confirm("Confirm delete?")) { return }
         //
         $scope.api.busy 	= true;
         $http.delete($scope.api.url+$scope.item._id)
