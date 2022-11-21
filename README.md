@@ -4,9 +4,9 @@ Minimalistic easy to use file storage service in a docker container.
 
 ![Alt text](docs/omyc.gif)
 
-The goal is selfhost a file storage for a small group (5 to 10 users),  because you know, cloud is other people computer.
+Because you know. There is no cloud. Cloud is other people computer.
 
-In my case, I use as a easy backup storage for my family.
+The goal is selfhost a file storage for a small group (5 to 10 users). In my case, I running family backup service.
 
 * Keep it simple and stupid (if you need more, go nextcloud)
 * Web access (can manage, preview, upload and download)
