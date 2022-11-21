@@ -1,10 +1,12 @@
 # Old Man Yells at Cloud
 
-Minimalistic easy to use file storage service packed in a docker container.
+Minimalistic easy to use file storage service in a docker container.
 
-The goal is serve a small group (5 to 10 users). 
+![Alt text](docs/omyc.gif)
 
-In my case, I use as a easy backup storage for my family
+The goal is selfhost a file storage for a small group (5 to 10 users),  because you know, cloud is other people computer.
+
+In my case, I use as a easy backup storage for my family.
 
 * Keep it simple and stupid (if you need more, go nextcloud)
 * Web access (can manage, preview, upload and download)
@@ -28,7 +30,6 @@ We at omyc express infinite gratitude to all this projects. "I am what I am beca
 
 Need NO github pull. Just use docker image 
 
-* make sure you have docker
 * make sure you have all exposed ports free (22, 80, 443, 55555)
 * start omyc image exporting /data folder ato your host 
 
