@@ -38,7 +38,7 @@ I did not build all services from scratch. I just patchwork multiple projects, b
 
 * Remember this is a personal project. I am just a man with a problem that decide to share the solution. 
 * "Never Trust, Always Verify". Check the code before use. 
-* Branch if need your own modifications.
+* Branch if need your own modifications. Check [dev docs](docs/dev.md)
 
 # Run yourself
 
