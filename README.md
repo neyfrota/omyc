@@ -34,15 +34,10 @@ I did not build all services from scratch. I just patchwork multiple projects, b
 > ### I express infinite gratitude to all above projects. 
 > ### "I am what I am because of who we all are." :)
 
-# Disclaimer
 
-* Remember this is a personal project. I am just a man with a problem that decide to share the solution. 
-* "Never Trust, Always Verify". Check the code before use. 
-* Branch if need your own modifications. Check [dev docs](docs/dev.md)
+# Test yourself
 
-# Run yourself
-
-Need NO git pull or build. Can use official docker image. 
+Need NO git pull or build. You can use official docker image. 
 
 * Make sure you have all exposed ports free (22, 80, 443, 55555)
 * Define host folder to store data
@@ -61,3 +56,10 @@ docker run -d \
 * First user is **admin** password **admin**. **CHANGE ASAP!**
 * Sftp to 127.0.0.1 (or host ip)
 * Check resilio sync
+
+# Disclaimer
+
+* Remember this is a personal project. I am just a man with a problem that decide to share the solution. 
+* "Never Trust, Always Verify". Check the code before use. 
+* Branch if need your own modifications. Check [dev docs](docs/dev.md)
+* have fun :)
