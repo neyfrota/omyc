@@ -34,7 +34,7 @@ I did not build all services from scratch. I just patchwork multiple projects, b
 > ### I express infinite gratitude to all above projects. 
 > ### "I am what I am because of who we all are." :)
 
-# Disclaimers
+# Disclaimer
 
 * Remember this is a personal project. I am just a man with a problem that decide to share the solution. 
 * "Never Trust, Always Verify". Check the code before use. 
